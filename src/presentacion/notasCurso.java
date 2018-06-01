@@ -26,6 +26,7 @@ public class notasCurso extends JFrame {
 	
 	metod met=new metod();
 	public notasCurso() throws Exception {
+		setAutoRequestFocus(false);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 797);

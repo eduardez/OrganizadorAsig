@@ -1,7 +1,6 @@
 package presentacion;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -10,8 +9,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextPane;
 import javax.swing.SpringLayout;
 import javax.swing.border.EmptyBorder;
 
@@ -19,19 +16,20 @@ import dominio.Asignatura;
 import dominio.Dialogos;
 import dominio.metod;
 import persistencia.Agente;
+
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
-import java.awt.Window.Type;
-import javax.swing.JToolBar;
 import java.awt.Toolkit;
-import java.awt.Canvas;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class menuPrincipal extends JFrame {
 
@@ -55,6 +53,8 @@ public class menuPrincipal extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 734, 502);
+
+	
 
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(230, 230, 250));
@@ -187,14 +187,27 @@ public class menuPrincipal extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, lblTotal, 0, SpringLayout.SOUTH, lblAsignatura);
 		sl_contentPane.putConstraint(SpringLayout.EAST, lblTotal, 85, SpringLayout.EAST, lblOtros);
 		contentPane.add(lblTotal);
-		
+
 		JComboBox cajaOtros = new JComboBox();
-		cajaOtros.setModel(new DefaultComboBoxModel(new String[] {"- Otras Opciones -","Notas por curso"}));
+		cajaOtros.setModel(new DefaultComboBoxModel(new String[] { "- Otras Opciones -", "Notas por curso" }));
 		sl_contentPane.putConstraint(SpringLayout.NORTH, cajaOtros, 1, SpringLayout.NORTH, botonNuevAsig);
 		sl_contentPane.putConstraint(SpringLayout.WEST, cajaOtros, 0, SpringLayout.WEST, lblLaboratorio);
 		sl_contentPane.putConstraint(SpringLayout.EAST, cajaOtros, -5, SpringLayout.EAST, lblParticipacion);
 		contentPane.add(cajaOtros);
-	
+		
+		
+		
+		JLabel edulcorante = new JLabel();
+		sl_contentPane.putConstraint(SpringLayout.NORTH, edulcorante, -45, SpringLayout.SOUTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.WEST, edulcorante, 251, SpringLayout.EAST, textDebug);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, edulcorante, 0, SpringLayout.SOUTH, textDebug);
+		sl_contentPane.putConstraint(SpringLayout.EAST, edulcorante, 0, SpringLayout.EAST, contentPane);
+		edulcorante.setToolTipText("Orgullosamente hecho por mis huevos morenos.");
+		edulcorante.setIcon(new ImageIcon(menuPrincipal.class.getResource("/profile.jpg")));
+		contentPane.add(edulcorante);
+
+		
+		
 		// ------------------------------------------Acciones------------------------------------------
 		cajaOtros.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -207,6 +220,14 @@ public class menuPrincipal extends JFrame {
 			}
 		});
 		
+		
+		edulcorante.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				di.dialogEdulcorante();
+			}
+		});
+
 		botonEditAsig.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
