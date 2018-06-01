@@ -3,6 +3,7 @@ package dominio;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.TextArea;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -15,6 +16,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import persistencia.Agente;
+import presentacion.notasCurso;
 
 public class metod {
 
@@ -40,22 +42,19 @@ public class metod {
 			customTabla(tablaNotas);
 
 		} catch (ArrayIndexOutOfBoundsException e) {
-			textDebug.append("Selecciona un año, que esto muestra asignaturas por año\n");
+			textDebug.setText("Selecciona un año.\n");
 			cleanTabla(tablaNotas);
 		}
 	}
 
 	public void customTabla(JTable tablaNotas) {
-		DefaultTableCellRenderer centro = new DefaultTableCellRenderer();
-		centro.setHorizontalAlignment(SwingConstants.CENTER);
-		DefaultTableCellRenderer colorTotal = new DefaultTableCellRenderer();
+		CustomTableCellRenderer colorTotal = new CustomTableCellRenderer();
 		colorTotal.setForeground(Color.RED);
 		colorTotal.setHorizontalAlignment(SwingConstants.CENTER);
-
 		for (int j = 0; j < tablaNotas.getModel().getRowCount(); j++) {
 			for (int i = 0; i < tablaNotas.getModel().getColumnCount(); i++) {
-				tablaNotas.getColumnModel().getColumn(i).setCellRenderer(centro);
 				tablaNotas.getColumnModel().getColumn(7).setCellRenderer(colorTotal);
+
 			}
 		}
 	}
@@ -68,6 +67,38 @@ public class metod {
 		}
 	}
 
+	public void tablaCurso(JTable tab, int curso) throws Exception {
+		ArrayList<Asignatura> asig = getAsig();
+		ArrayList<Asignatura> asigAprob = new ArrayList<Asignatura>();
+		for (int i = 0; i < asig.size(); i++) {
+			if (asig.get(i).getCurso() == curso) { // Si pertenece a ese curso
+				if (!asigAprob.contains(asig.get(i))) { // El array no la contiene
+					if (masDeUnCuatro(asig.get(i))) { // Ha superado con mas de un 4 lo obligatorio
+
+						asigAprob.add(asig.get(i));
+
+					}
+				}
+			}
+		}
+		// Meter en la tabla
+		for (int i = 0; i < asigAprob.size(); i++) {
+			System.out.println(asigAprob.get(i).getNombre() + "  |  " + calcTotal(asigAprob.get(i)));
+
+		}
+		if (asigAprob.size() > 0) {
+			for (int i = 0; i < asigAprob.size() && i < 10; i++) {
+				tab.getModel().setValueAt(asigAprob.get(i).getNombre(), i, 0);
+				tab.getModel().setValueAt(calcTotal(asigAprob.get(i)), i, 1);
+
+			}
+		} else {
+			tab.setValueAt("No se hacursado", 0, 0);
+			tab.setValueAt(" ninguna asignatura", 0, 1);
+		}
+
+	}
+
 	// ---------------------- Gestion Cajas -------------------
 
 	public JComboBox updateBox(JComboBox caja, String[] valores) throws Exception {
@@ -77,8 +108,21 @@ public class metod {
 		return caja;
 	}
 
+	public void otrasOp(JComboBox cajaOtros) throws Exception {
+		int opt = cajaOtros.getSelectedIndex();
+		System.out.println(opt);
+		switch (opt) {
+		case 0:
+			break;
+		case 1:
+			notasCurso not = new notasCurso();
+			not.setVisible(true);
+			break;
+		}
+	}
+
 	// ------------------------ Calculos ----------------------
-	
+
 	public boolean compPor(JTextField[] por, TextArea debug) {
 		boolean bien = true;
 		int suma = 0;
@@ -93,6 +137,18 @@ public class metod {
 		}
 
 		return bien;
+	}
+
+	public boolean masDeUnCuatro(Asignatura a) {
+		boolean superado = false;
+		if (a.isGlobal()) {
+			if (a.getNota1() >= 4 && a.getNotaLab() >= 4) {
+				superado = true;
+			}
+		} else if (a.getNota1() >= 4 && a.getNotaLab() >= 4 && a.getNota2() >= 4) {
+			superado = true;
+		}
+		return superado;
 	}
 
 	private double calcTotal(Asignatura asignatura) {

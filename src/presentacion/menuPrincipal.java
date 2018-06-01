@@ -10,11 +10,13 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.SpringLayout;
 import javax.swing.border.EmptyBorder;
 
 import dominio.Asignatura;
+import dominio.Dialogos;
 import dominio.metod;
 import persistencia.Agente;
 import javax.swing.DefaultComboBoxModel;
@@ -26,6 +28,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import java.awt.Window.Type;
+import javax.swing.JToolBar;
+import java.awt.Toolkit;
+import java.awt.Canvas;
 
 public class menuPrincipal extends JFrame {
 
@@ -37,35 +43,19 @@ public class menuPrincipal extends JFrame {
 	private JTable table;
 	private JTable tablaNotas;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					frame = new menuPrincipal();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	metod met = new metod();
+	Dialogos di = new Dialogos();
 
-	/**
-	 * Create the frame.
-	 * 
-	 * @throws Exception
-	 */
 	public menuPrincipal() throws Exception {
-		asigNombre = todasAsig();
-		asigArray = getAsig();
-		metod met = new metod();
-
+		setIconImage(Toolkit.getDefaultToolkit().getImage(menuPrincipal.class.getResource("/icon.png")));
 		setResizable(false);
+		setTitle("Organizador de Asignaturas - V.1.2.3");
+		asigNombre = nomAsig();
+		asigArray = getAsig();
+		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 734, 502);
+
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(230, 230, 250));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -74,12 +64,14 @@ public class menuPrincipal extends JFrame {
 		contentPane.setLayout(sl_contentPane);
 
 		JComboBox cajaAsig = new JComboBox();
+		sl_contentPane.putConstraint(SpringLayout.WEST, cajaAsig, 559, SpringLayout.WEST, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.EAST, cajaAsig, -10, SpringLayout.EAST, contentPane);
 		cajaAsig.setModel(new DefaultComboBoxModel(asigNombre));
 		contentPane.add(cajaAsig);
 
 		JButton botonNuevAsig = new JButton("A\u00F1adir Asignatura");
 		sl_contentPane.putConstraint(SpringLayout.NORTH, botonNuevAsig, 1, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.WEST, botonNuevAsig, 559, SpringLayout.WEST, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.EAST, botonNuevAsig, -10, SpringLayout.EAST, contentPane);
 
 		contentPane.add(botonNuevAsig);
@@ -92,35 +84,28 @@ public class menuPrincipal extends JFrame {
 		contentPane.add(botonEditAsig);
 
 		JLabel lblCurso = new JLabel("Curso:");
-		sl_contentPane.putConstraint(SpringLayout.NORTH, lblCurso, 10, SpringLayout.NORTH, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.WEST, lblCurso, 10, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, lblCurso, 0, SpringLayout.SOUTH, cajaAsig);
 		contentPane.add(lblCurso);
 
 		JComboBox cajaAo = new JComboBox();
+		sl_contentPane.putConstraint(SpringLayout.NORTH, cajaAo, 0, SpringLayout.NORTH, cajaAsig);
 		cajaAo.setModel(new DefaultComboBoxModel(met.aosAsig(asigArray)));
-		sl_contentPane.putConstraint(SpringLayout.WEST, botonNuevAsig, 416, SpringLayout.EAST, cajaAo);
-		sl_contentPane.putConstraint(SpringLayout.WEST, cajaAo, 19, SpringLayout.EAST, lblCurso);
-		sl_contentPane.putConstraint(SpringLayout.EAST, cajaAo, -575, SpringLayout.EAST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.NORTH, cajaAo, -3, SpringLayout.NORTH, lblCurso);
 		contentPane.add(cajaAo);
 
-		JButton btnAct = new JButton("Actualizar Notas");
-
-		sl_contentPane.putConstraint(SpringLayout.EAST, btnAct, -273, SpringLayout.EAST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.WEST, cajaAsig, 114, SpringLayout.EAST, btnAct);
-		sl_contentPane.putConstraint(SpringLayout.WEST, btnAct, 291, SpringLayout.WEST, contentPane);
-		contentPane.add(btnAct);
-
 		JTextArea textDebug = new JTextArea();
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, btnAct, -334, SpringLayout.NORTH, textDebug);
+		sl_contentPane.putConstraint(SpringLayout.WEST, textDebug, 10, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, textDebug, -297, SpringLayout.EAST, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, textDebug, -40, SpringLayout.SOUTH, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.WEST, textDebug, 109, SpringLayout.WEST, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, textDebug, 0, SpringLayout.SOUTH, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, textDebug, -98, SpringLayout.EAST, contentPane);
 		contentPane.add(textDebug);
 
 		tablaNotas = new JTable();
-		sl_contentPane.putConstraint(SpringLayout.NORTH, tablaNotas, 138, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.WEST, cajaAo, 50, SpringLayout.WEST, tablaNotas);
+		sl_contentPane.putConstraint(SpringLayout.WEST, lblCurso, 0, SpringLayout.WEST, tablaNotas);
+		tablaNotas.setColumnSelectionAllowed(true);
+		tablaNotas.setCellSelectionEnabled(true);
+		tablaNotas.setEnabled(false);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, tablaNotas, -90, SpringLayout.NORTH, textDebug);
 		tablaNotas.setModel(new DefaultTableModel(new Object[][] { { null, null, null, null, null, null, null, null },
 				{ null, null, null, null, null, null, null, null }, { null, null, null, null, null, null, null, null },
 				{ null, null, null, null, null, null, null, null }, { null, null, null, null, null, null, null, null },
@@ -131,26 +116,25 @@ public class menuPrincipal extends JFrame {
 				new String[] { "Asignatura", "P1 / Global", "P2", "Laboratorio", "Participacion", "Trabajo Teorico",
 						"Otros", "Total" }));
 		met.customTabla(tablaNotas);
-		
+
 		sl_contentPane.putConstraint(SpringLayout.WEST, tablaNotas, 15, SpringLayout.WEST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, tablaNotas, -50, SpringLayout.SOUTH, textDebug);
 		sl_contentPane.putConstraint(SpringLayout.EAST, tablaNotas, -15, SpringLayout.EAST, contentPane);
-		tablaNotas.setColumnSelectionAllowed(true);
-		tablaNotas.setCellSelectionEnabled(true);
 		contentPane.add(tablaNotas);
 
 		JLabel lblAsignatura = new JLabel("Asignatura");
+		sl_contentPane.putConstraint(SpringLayout.NORTH, tablaNotas, 5, SpringLayout.SOUTH, lblAsignatura);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, lblAsignatura, -327, SpringLayout.SOUTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.WEST, lblAsignatura, 15, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, lblAsignatura, -618, SpringLayout.EAST, contentPane);
 		lblAsignatura.setHorizontalAlignment(SwingConstants.CENTER);
-		sl_contentPane.putConstraint(SpringLayout.WEST, lblAsignatura, 0, SpringLayout.WEST, tablaNotas);
-		sl_contentPane.putConstraint(SpringLayout.EAST, lblAsignatura, 85, SpringLayout.WEST, tablaNotas);
 		lblAsignatura.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, lblAsignatura, 0, SpringLayout.NORTH, tablaNotas);
 		contentPane.add(lblAsignatura);
 
 		JLabel lblglob = new JLabel("P1 / Global");
+		sl_contentPane.putConstraint(SpringLayout.EAST, cajaAo, 0, SpringLayout.EAST, lblglob);
+		sl_contentPane.putConstraint(SpringLayout.WEST, lblglob, 100, SpringLayout.WEST, contentPane);
 		lblglob.setHorizontalAlignment(SwingConstants.CENTER);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, lblglob, 0, SpringLayout.NORTH, lblAsignatura);
-		sl_contentPane.putConstraint(SpringLayout.WEST, lblglob, 0, SpringLayout.EAST, lblAsignatura);
 		sl_contentPane.putConstraint(SpringLayout.EAST, lblglob, 85, SpringLayout.EAST, lblAsignatura);
 		lblglob.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		contentPane.add(lblglob);
@@ -188,11 +172,11 @@ public class menuPrincipal extends JFrame {
 		contentPane.add(lblteo);
 
 		JLabel lblOtros = new JLabel("Otros");
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, lblOtros, -15, SpringLayout.NORTH, tablaNotas);
 		lblOtros.setFont(new Font("Dialog", Font.PLAIN, 12));
 		lblOtros.setEnabled(true);
 		lblOtros.setHorizontalAlignment(SwingConstants.CENTER);
 		sl_contentPane.putConstraint(SpringLayout.WEST, lblOtros, 0, SpringLayout.EAST, lblteo);
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, lblOtros, 0, SpringLayout.NORTH, tablaNotas);
 		sl_contentPane.putConstraint(SpringLayout.EAST, lblOtros, 85, SpringLayout.EAST, lblteo);
 		contentPane.add(lblOtros);
 
@@ -203,15 +187,26 @@ public class menuPrincipal extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, lblTotal, 0, SpringLayout.SOUTH, lblAsignatura);
 		sl_contentPane.putConstraint(SpringLayout.EAST, lblTotal, 85, SpringLayout.EAST, lblOtros);
 		contentPane.add(lblTotal);
-
-		// ------------------------------------------ Acciones
-		// ------------------------------------------
-		btnAct.addActionListener(new ActionListener() {
+		
+		JComboBox cajaOtros = new JComboBox();
+		cajaOtros.setModel(new DefaultComboBoxModel(new String[] {"- Otras Opciones -","Notas por curso"}));
+		sl_contentPane.putConstraint(SpringLayout.NORTH, cajaOtros, 1, SpringLayout.NORTH, botonNuevAsig);
+		sl_contentPane.putConstraint(SpringLayout.WEST, cajaOtros, 0, SpringLayout.WEST, lblLaboratorio);
+		sl_contentPane.putConstraint(SpringLayout.EAST, cajaOtros, -5, SpringLayout.EAST, lblParticipacion);
+		contentPane.add(cajaOtros);
+	
+		// ------------------------------------------Acciones------------------------------------------
+		cajaOtros.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				met.modTabla(tablaNotas, asigArray, textDebug);
+				try {
+					met.otrasOp(cajaOtros);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
-
+		
 		botonEditAsig.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -219,11 +214,12 @@ public class menuPrincipal extends JFrame {
 					EditAsignatura e = new EditAsignatura(cajaAsig,
 							asigArray.get(inde).getNombre() + " - " + asigArray.get(inde).getAo(), asigArray, cajaAo);
 					e.setAsig(asigArray.get(inde));
+					e.setLocationRelativeTo(null);
 					e.setVisible(true);
 				} catch (IndexOutOfBoundsException e) {
-					textDebug.append("Problema de indices en el array de asignaturas. \nCambia de año y solucionao\n");
+					textDebug.setText("Problema de indices en el array de asignaturas. \nCambia de año y solucionao\n");
 				} catch (Exception e) {
-					textDebug.append("Ha pasado algo, algo malo, pero tranquilo, que el mundo no av a explotar.\n");
+					textDebug.setText("Ha pasado algo, algo malo, pero tranquilo, que el mundo no av a explotar.\n");
 				}
 			}
 		});
@@ -233,6 +229,7 @@ public class menuPrincipal extends JFrame {
 				try {
 					nu = new nuevaAsig(cajaAsig, asigArray, cajaAo);
 					nu.setVisible(true);
+					nu.setLocationRelativeTo(null);
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
@@ -249,6 +246,7 @@ public class menuPrincipal extends JFrame {
 			}
 		});
 	}
+	// ------------------------------------------METODOS------------------------------------------
 
 	public void updateAsig(JComboBox cajaAsig, ArrayList<Asignatura> asigArray1, JComboBox cajaAo, metod met)
 			throws Exception {
@@ -257,9 +255,7 @@ public class menuPrincipal extends JFrame {
 			System.out.println(asigArray.get(i).getNombre());
 	}
 
-		// ------------------------------------------ METODOS  ------------------------------------------
-
-	private String[] todasAsig() throws Exception {
+	private String[] nomAsig() throws Exception {
 		ArrayList<Asignatura> a = getAsig();
 		String[] nombres = new String[a.size()];
 		for (int i = 0; i < a.size(); i++)
@@ -269,6 +265,13 @@ public class menuPrincipal extends JFrame {
 
 	public ArrayList<Asignatura> getAsig() throws Exception {
 		Agente ag = new Agente();
-		return ag.selectAsignaturas();
+
+		ArrayList<Asignatura> arr = ag.selectAsignaturas();
+		if (arr == null) {
+			frame.setVisible(false);
+			return null;
+		} else {
+			return arr;
+		}
 	}
 }

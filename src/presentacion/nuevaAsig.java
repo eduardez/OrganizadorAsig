@@ -20,6 +20,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import dominio.Asignatura;
+import dominio.Dialogos;
 import dominio.metod;
 import net.miginfocom.swing.MigLayout;
 import persistencia.Agente;
@@ -53,6 +54,8 @@ public class nuevaAsig extends JFrame {
 	private JTextField textNombre;
 	private JTextField textAo;
 	private JLabel lblAo;
+	private JTextField textCurso;
+	private JLabel lblCurso;
 
 	public nuevaAsig(JComboBox cajaAsig, ArrayList<Asignatura> asigArray, JComboBox cajaAo) throws SQLException {
 		
@@ -69,25 +72,34 @@ public class nuevaAsig extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(
-				new MigLayout("", "[grow,left][grow,center][grow,right]", "[][][][][][][][][][][][][][][][][grow]"));
+				new MigLayout("", "[grow,left][grow,center][][grow,right]", "[][][][][][][][][][][][][][][][][grow]"));
 
 		lblNombreAsignatura = new JLabel("Nombre Asignatura:");
 		lblNombreAsignatura.setHorizontalAlignment(SwingConstants.RIGHT);
 		contentPane.add(lblNombreAsignatura, "cell 0 1,alignx trailing");
 
 		textNombre = new JTextField();
-		contentPane.add(textNombre, "cell 1 1 2 1,growx");
+		contentPane.add(textNombre, "cell 1 1 3 1,growx");
 		textNombre.setColumns(10);
-
-		lblAo = new JLabel("A\u00F1o:");
-		contentPane.add(lblAo, "cell 0 3,alignx right");
-
-		textAo = new JTextField();
-		contentPane.add(textAo, "cell 1 3,growx");
-		textAo.setColumns(10);
-
+				
+						lblAo = new JLabel("A\u00F1o:");
+						contentPane.add(lblAo, "cell 0 2,alignx right");
+		
+				textAo = new JTextField();
+				contentPane.add(textAo, "cell 1 2,growx");
+				textAo.setColumns(10);
+		
+				lblCurso = new JLabel("Curso:");
+				lblCurso.setHorizontalAlignment(SwingConstants.RIGHT);
+				lblCurso.setEnabled(true);
+				contentPane.add(lblCurso, "cell 2 2,alignx trailing");
+		
+				textCurso = new JTextField();
+				contentPane.add(textCurso, "cell 3 2,growx");
+				textCurso.setColumns(10);
+		
 		lblPorcentaje = new JLabel("Porcentaje ( % )");
-		contentPane.add(lblPorcentaje, "cell 2 3,alignx center");
+		contentPane.add(lblPorcentaje, "cell 3 3,alignx center");
 
 		lblNewLabel = new JLabel("Nota Examen:");
 		contentPane.add(lblNewLabel, "cell 0 4,alignx right");
@@ -103,7 +115,7 @@ public class nuevaAsig extends JFrame {
 
 		textNota1Por = new JTextField();
 		textNota1Por.setHorizontalAlignment(SwingConstants.RIGHT);
-		contentPane.add(textNota1Por, "cell 2 4,growx");
+		contentPane.add(textNota1Por, "cell 3 4,growx");
 		textNota1Por.setColumns(10);
 		boolGlobal.setHorizontalAlignment(SwingConstants.RIGHT);
 		boolGlobal.setToolTipText("Marcar si la asignatura tiene un \u00FAnico examen global");
@@ -116,7 +128,7 @@ public class nuevaAsig extends JFrame {
 
 		textNota2Por = new JTextField();
 		textNota2Por.setHorizontalAlignment(SwingConstants.RIGHT);
-		contentPane.add(textNota2Por, "cell 2 5,growx");
+		contentPane.add(textNota2Por, "cell 3 5,growx");
 		textNota2Por.setColumns(10);
 
 		lblNewLabel_1 = new JLabel("Nota Laboratorio:");
@@ -129,7 +141,7 @@ public class nuevaAsig extends JFrame {
 
 		textNotaLabPor = new JTextField();
 		textNotaLabPor.setHorizontalAlignment(SwingConstants.RIGHT);
-		contentPane.add(textNotaLabPor, "cell 2 7,growx");
+		contentPane.add(textNotaLabPor, "cell 3 7,growx");
 		textNotaLabPor.setColumns(10);
 
 		lblNotaParticipacion = new JLabel("Nota Participacion:");
@@ -142,7 +154,7 @@ public class nuevaAsig extends JFrame {
 
 		textNotaParPor = new JTextField();
 		textNotaParPor.setHorizontalAlignment(SwingConstants.RIGHT);
-		contentPane.add(textNotaParPor, "cell 2 8,growx");
+		contentPane.add(textNotaParPor, "cell 3 8,growx");
 		textNotaParPor.setColumns(10);
 
 		lblNewLabel_2 = new JLabel("Nota Trabajo Teorico:");
@@ -155,7 +167,7 @@ public class nuevaAsig extends JFrame {
 
 		textNotaTeoricoPor = new JTextField();
 		textNotaTeoricoPor.setHorizontalAlignment(SwingConstants.RIGHT);
-		contentPane.add(textNotaTeoricoPor, "cell 2 9,growx");
+		contentPane.add(textNotaTeoricoPor, "cell 3 9,growx");
 		textNotaTeoricoPor.setColumns(10);
 
 		lblOtrasNotas = new JLabel("Otras notas:");
@@ -168,12 +180,12 @@ public class nuevaAsig extends JFrame {
 
 		textOtrosPor = new JTextField();
 		textOtrosPor.setHorizontalAlignment(SwingConstants.RIGHT);
-		contentPane.add(textOtrosPor, "cell 2 10,growx");
+		contentPane.add(textOtrosPor, "cell 3 10,growx");
 		textOtrosPor.setColumns(10);
 
 		debug = new TextArea();
 		debug.setEditable(false);
-		contentPane.add(debug, "cell 0 15 3 2,grow");
+		contentPane.add(debug, "cell 0 15 4 2,grow");
 		
 		JButton btnGuardar = new JButton("Guardar");
 		
@@ -183,7 +195,7 @@ public class nuevaAsig extends JFrame {
 		contentPane.add(btnCancelar, "cell 1 14");
 
 		JButton btnLimpiar = new JButton("Limpiar");
-		contentPane.add(btnLimpiar, "cell 2 14,alignx center");
+		contentPane.add(btnLimpiar, "cell 3 14,alignx center");
 
 
 		// ---------------------------- COPIPASTE --------------------------------
@@ -212,10 +224,10 @@ public class nuevaAsig extends JFrame {
 						int opt = di.dialogAsig();
 						if (opt == 0) {
 							debug.append("Rellenados con 0\n");
-							rellenarCero(text);
+							rellenarCero(text,por);
 							ag.insertarAsig(CrearAsig(textNombre, boolGlobal, textNota1, textNota1Por, textNota2,
 									textNota2Por, textNotaLab, textNotaLabPor, textNotaPar, textNotaParPor,
-									textNotaTeorico, textNotaTeoricoPor, textOtros, textOtrosPor, textAo));
+									textNotaTeorico, textNotaTeoricoPor, textOtros, textOtrosPor, textAo, textCurso));
 						} else {
 							debug.append("Cancelado\n");
 						}
@@ -265,7 +277,7 @@ public class nuevaAsig extends JFrame {
 
 	protected Asignatura CrearAsig(JTextField nom, JCheckBox glob, JTextField n1, JTextField n1p, JTextField n2,
 			JTextField n2p, JTextField nla, JTextField nlap, JTextField npa, JTextField npap, JTextField nte,
-			JTextField ntep, JTextField not, JTextField notp, JTextField ao) {
+			JTextField ntep, JTextField not, JTextField notp, JTextField ao, JTextField curso) {
 		Asignatura a = new Asignatura();
 
 		a.setNombre(nom.getText());
@@ -283,6 +295,7 @@ public class nuevaAsig extends JFrame {
 		a.setOtros(Double.valueOf(not.getText()));
 		a.setOtrosPor(Double.valueOf(notp.getText()));
 		a.setAo(Integer.valueOf(ao.getText()));
+		a.setCurso(Integer.valueOf(curso.getText()));
 		return a;
 	}
 
@@ -298,10 +311,13 @@ public class nuevaAsig extends JFrame {
 		return por;
 	}
 
-	private void rellenarCero(JTextField[] text) {
+	private void rellenarCero(JTextField[] text,JTextField[] por) {
 		for (int i = 0; i < text.length; i++) {
 			if (text[i].getText().equals(""))
 				text[i].setText("0.0");
+		}for (int i = 0; i < por.length; i++) {
+			if (por[i].getText().equals(""))
+				por[i].setText("0.0");
 		}
 	}
 

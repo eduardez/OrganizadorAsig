@@ -3,15 +3,17 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import dominio.Asignatura;
+import dominio.Dialogos;
 
 public class Agente {
 	
-	private final String url = "jdbc:ucanaccess://D:\\Eduardez\\workspace\\Eclipse\\OrganizadorAsig\\Asignaturas.accdb";
+	private final String url = "jdbc:ucanaccess://resources\\Asignaturas.accdb";
 
 	public Agente() throws SQLException {
 	}
 
-	public ArrayList<Asignatura> selectAsignaturas() throws Exception {
+	public ArrayList<Asignatura> selectAsignaturas() {
+		try {
 		String sql = "SELECT * FROM Asignatura ";
 		Connection conn = DriverManager.getConnection(url);
 		Statement stm = conn.createStatement();
@@ -38,14 +40,20 @@ public class Agente {
 			a.setOtros(res.getDouble("Otros"));
 			a.setOtrosPor(res.getDouble("otrosPor"));
 			a.setAo(res.getInt("Ao"));
+			a.setCurso(res.getInt("curso"));
 			lasig.add(a);
-			System.out.println(a.toString());
 		}
 
 		conn.commit();
 		stm.close();
 		conn.close();
 		return lasig;
+		
+		}catch(SQLException e) {
+			Dialogos di=new Dialogos();
+			di.dialogNoBD();
+			return null;
+		}
 	}
 	
 
@@ -54,7 +62,7 @@ public class Agente {
 		boolean global;
 		double textNota1, textNota1Por, textNota2, textNota2Por, textNotaLab, textNotaLabPor, textNotaPar,
 				textNotaParPor, textNotaTeorico, textNotaTeoricoPor, textOtros, textOtrosPor;
-		int ao;
+		int ao,curso;
 		nombre = a.getNombre();
 		global = a.isGlobal();
 		textNota1 = a.getNota1();
@@ -70,12 +78,13 @@ public class Agente {
 		textOtros=a.getOtros();
 		textOtrosPor=a.getOtrosPor();
 		ao=a.getAo();
+		curso=a.getCurso();
 		System.out.println(a.toString());
 
-		String sql = "INSERT INTO Asignatura (Nombre, global, Parcial1, porp1, parcial2, porp2, lab, labpor, particip, particippor, trabteo, trabtpor, otros, otrospor, ao) VALUES "
+		String sql = "INSERT INTO Asignatura (Nombre, global, Parcial1, porp1, parcial2, porp2, lab, labpor, particip, particippor, trabteo, trabtpor, otros, otrospor, ao, curso) VALUES "
 				+ "('"+ nombre +"' , "+ global +" , '" + textNota1 + "' , '" + textNota1Por
 				+ "' , '" + textNota2 + "' , '" + textNota2Por + " ', '" + textNotaLab + "' , '" + textNotaLabPor + "' ,'" + textNotaPar
-				+ "' , '" + textNotaParPor + "' , '" + textNotaTeorico + "' , '" + textNotaTeoricoPor + "' , '" + textOtros + "' , '" + textOtrosPor + "', '" + ao + "'  )";
+				+ "' , '" + textNotaParPor + "' , '" + textNotaTeorico + "' , '" + textNotaTeoricoPor + "' , '" + textOtros + "' , '" + textOtrosPor + "', '" + ao + "', '"+curso+"'  )";
 		Connection conn = DriverManager.getConnection(url);
 		Statement stm = conn.createStatement();
 		stm.executeUpdate(sql);

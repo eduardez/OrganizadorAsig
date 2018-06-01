@@ -6,12 +6,12 @@ public class Asignatura {
 	private boolean global;
 	private double Nota1, Nota1Por, Nota2, Nota2Por, NotaLab, NotaLabPor, NotaPar,
 			NotaParPor, NotaTeorico, NotaTeoricoPor, Otros, OtrosPor;
-	private int ao;
+	private int ao,curso;
 
 	public Asignatura() {
 		
 	}
-	public Asignatura(String nombre, boolean global,double a, double b, double c, double d, double e, double f, double g, double h, double i, double j, double k, double l, int ao) {
+	public Asignatura(String nombre, boolean global,double a, double b, double c, double d, double e, double f, double g, double h, double i, double j, double k, double l, int ao,int curso) {
 		this.nombre=nombre;
 		this.global=global;
 		this.Nota1 = a;
@@ -27,6 +27,7 @@ public class Asignatura {
 		this.Otros = k;
 		this.OtrosPor = l;
 		this.ao=ao;
+		this.curso=curso;
 	}
 
 	
@@ -153,5 +154,11 @@ public class Asignatura {
 	public void setAo(int  ao) {
 		this.ao = ao;
 	}
-
+	public int getCurso() {
+		return curso;
+	}
+	public void setCurso(int curso) {
+		this.curso = curso;
+	}
+	
 }

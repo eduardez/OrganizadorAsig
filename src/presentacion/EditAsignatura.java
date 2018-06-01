@@ -22,6 +22,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import dominio.Asignatura;
+import dominio.Dialogos;
 import dominio.metod;
 import net.miginfocom.swing.MigLayout;
 import persistencia.Agente;
@@ -54,9 +55,12 @@ public class EditAsignatura extends JFrame {
 	private JLabel lblAo;
 	private JTextField textAo;
 	private JButton btnActivarEdicionCompleta;
+	private JTextField textCurso;
+	private JLabel lblCurso;
 
 	public EditAsignatura(JComboBox cajaAsig, String nom, ArrayList<Asignatura> asigArray, JComboBox cajaAo)
 			throws SQLException {
+
 		metod met = new metod();
 		Dialogos di = new Dialogos();
 		Agente ag = new Agente();
@@ -64,13 +68,13 @@ public class EditAsignatura extends JFrame {
 
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 469, 508);
+		setBounds(100, 100, 469, 522);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(230, 230, 250));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(
-				new MigLayout("", "[grow,left][grow,center][grow,right]", "[][][][][][][][][][][][][][][][][][grow]"));
+				new MigLayout("", "[grow,left][grow,center][][grow,right]", "[][][][][][][][][][][][][][][][][grow]"));
 
 		lblNombreAsignatura = new JLabel("Nombre Asignatura:");
 		lblNombreAsignatura.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -78,18 +82,28 @@ public class EditAsignatura extends JFrame {
 
 		textNombre = new JTextField();
 		textNombre.setEditable(false);
-		contentPane.add(textNombre, "cell 1 1 2 1,growx");
+		contentPane.add(textNombre, "cell 1 1 3 1,growx");
 		textNombre.setColumns(10);
 
 		lblAo = new JLabel("A\u00F1o:");
-		contentPane.add(lblAo, "cell 0 3,alignx trailing");
+		contentPane.add(lblAo, "cell 0 2,alignx trailing");
 
 		textAo = new JTextField();
-		contentPane.add(textAo, "cell 1 3,growx");
+		contentPane.add(textAo, "cell 1 2,growx");
 		textAo.setColumns(10);
 
+		lblCurso = new JLabel("Curso:");
+		lblCurso.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblCurso.setEnabled(true);
+		contentPane.add(lblCurso, "cell 2 2,alignx trailing");
+
+		textCurso = new JTextField();
+		textCurso.setEditable(false);
+		contentPane.add(textCurso, "cell 3 2,growx");
+		textCurso.setColumns(10);
+
 		lblPorcentaje = new JLabel("Porcentaje ( % )");
-		contentPane.add(lblPorcentaje, "cell 2 3,alignx center");
+		contentPane.add(lblPorcentaje, "cell 3 3,alignx center");
 
 		lblNewLabel = new JLabel("Nota Examen:");
 		contentPane.add(lblNewLabel, "cell 0 4,alignx right");
@@ -107,7 +121,7 @@ public class EditAsignatura extends JFrame {
 		textNota1Por = new JTextField();
 		textNota1Por.setEditable(false);
 		textNota1Por.setHorizontalAlignment(SwingConstants.RIGHT);
-		contentPane.add(textNota1Por, "cell 2 4,growx");
+		contentPane.add(textNota1Por, "cell 3 4,growx");
 		textNota1Por.setColumns(10);
 		boolGlobal.setHorizontalAlignment(SwingConstants.RIGHT);
 		boolGlobal.setToolTipText("Marcar si la asignatura tiene un \u00FAnico examen global");
@@ -121,68 +135,68 @@ public class EditAsignatura extends JFrame {
 		textNota2Por = new JTextField();
 		textNota2Por.setEditable(false);
 		textNota2Por.setHorizontalAlignment(SwingConstants.RIGHT);
-		contentPane.add(textNota2Por, "cell 2 5,growx");
+		contentPane.add(textNota2Por, "cell 3 5,growx");
 		textNota2Por.setColumns(10);
 
 		lblNewLabel_1 = new JLabel("Nota Laboratorio:");
-		contentPane.add(lblNewLabel_1, "cell 0 7,alignx right");
+		contentPane.add(lblNewLabel_1, "cell 0 6,alignx right");
 
 		textNotaLab = new JTextField();
 		textNotaLab.setHorizontalAlignment(SwingConstants.RIGHT);
-		contentPane.add(textNotaLab, "cell 1 7,growx");
+		contentPane.add(textNotaLab, "cell 1 6,growx");
 		textNotaLab.setColumns(10);
 
 		textNotaLabPor = new JTextField();
 		textNotaLabPor.setEditable(false);
 		textNotaLabPor.setHorizontalAlignment(SwingConstants.RIGHT);
-		contentPane.add(textNotaLabPor, "cell 2 7,growx");
+		contentPane.add(textNotaLabPor, "cell 3 6,growx");
 		textNotaLabPor.setColumns(10);
 
 		lblNotaParticipacion = new JLabel("Nota Participacion:");
-		contentPane.add(lblNotaParticipacion, "cell 0 8,alignx right");
+		contentPane.add(lblNotaParticipacion, "cell 0 7,alignx right");
 
 		textNotaPar = new JTextField();
 		textNotaPar.setHorizontalAlignment(SwingConstants.RIGHT);
-		contentPane.add(textNotaPar, "cell 1 8,growx");
+		contentPane.add(textNotaPar, "cell 1 7,growx");
 		textNotaPar.setColumns(10);
 
 		textNotaParPor = new JTextField();
 		textNotaParPor.setEditable(false);
 		textNotaParPor.setHorizontalAlignment(SwingConstants.RIGHT);
-		contentPane.add(textNotaParPor, "cell 2 8,growx");
+		contentPane.add(textNotaParPor, "cell 3 7,growx");
 		textNotaParPor.setColumns(10);
 
 		lblNewLabel_2 = new JLabel("Nota Trabajo Teorico:");
-		contentPane.add(lblNewLabel_2, "cell 0 9,alignx right");
+		contentPane.add(lblNewLabel_2, "cell 0 8,alignx right");
 
 		textNotaTeorico = new JTextField();
 		textNotaTeorico.setHorizontalAlignment(SwingConstants.RIGHT);
-		contentPane.add(textNotaTeorico, "cell 1 9,growx");
+		contentPane.add(textNotaTeorico, "cell 1 8,growx");
 		textNotaTeorico.setColumns(10);
 
 		textNotaTeoricoPor = new JTextField();
 		textNotaTeoricoPor.setEditable(false);
 		textNotaTeoricoPor.setHorizontalAlignment(SwingConstants.RIGHT);
-		contentPane.add(textNotaTeoricoPor, "cell 2 9,growx");
+		contentPane.add(textNotaTeoricoPor, "cell 3 8,growx");
 		textNotaTeoricoPor.setColumns(10);
 
 		lblOtrasNotas = new JLabel("Otras notas:");
-		contentPane.add(lblOtrasNotas, "cell 0 10,alignx right");
+		contentPane.add(lblOtrasNotas, "cell 0 9,alignx right");
 
 		textOtros = new JTextField();
 		textOtros.setHorizontalAlignment(SwingConstants.RIGHT);
-		contentPane.add(textOtros, "cell 1 10,growx");
+		contentPane.add(textOtros, "cell 1 9,growx");
 		textOtros.setColumns(10);
 
 		textOtrosPor = new JTextField();
 		textOtrosPor.setEditable(false);
 		textOtrosPor.setHorizontalAlignment(SwingConstants.RIGHT);
-		contentPane.add(textOtrosPor, "cell 2 10,growx");
+		contentPane.add(textOtrosPor, "cell 3 9,growx");
 		textOtrosPor.setColumns(10);
 
 		debug = new TextArea();
 		debug.setEditable(false);
-		contentPane.add(debug, "cell 0 15 3 2,grow");
+		contentPane.add(debug, "cell 0 14 4 2,grow");
 
 		// ---------------------------- COPIPASTE --------------------------------
 		// textNombre
@@ -202,10 +216,13 @@ public class EditAsignatura extends JFrame {
 		btnActivarEdicionCompleta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				textNombre.setEditable(true);
-				for(int i=0;i<por.length;i++)por[i].setEditable(true);
+				textCurso.setEditable(true);
+				boolGlobal.setEnabled(true);;
+				for (int i = 0; i < por.length; i++)
+					por[i].setEditable(true);
 			}
 		});
-		contentPane.add(btnActivarEdicionCompleta, "cell 2 17");
+		contentPane.add(btnActivarEdicionCompleta, "cell 3 16");
 
 		// ------------------------------ BOTONES ------------------------------------
 		addWindowListener(new WindowAdapter() {
@@ -229,7 +246,7 @@ public class EditAsignatura extends JFrame {
 						ag.EliminarAsig(a);
 						ag.insertarAsig(CrearAsig(textNombre, boolGlobal, textNota1, textNota1Por, textNota2,
 								textNota2Por, textNotaLab, textNotaLabPor, textNotaPar, textNotaParPor, textNotaTeorico,
-								textNotaTeoricoPor, textOtros, textOtrosPor, textAo));
+								textNotaTeoricoPor, textOtros, textOtrosPor, textAo, textCurso));
 						System.out.println("Modificada");
 					} catch (SQLException e) {
 						e.printStackTrace();
@@ -240,10 +257,10 @@ public class EditAsignatura extends JFrame {
 
 			}
 		});
-		contentPane.add(btnGuardar, "cell 0 14,alignx center");
+		contentPane.add(btnGuardar, "cell 0 13,alignx center");
 
 		JButton btnCancelar = new JButton("Cancelar");
-		contentPane.add(btnCancelar, "cell 1 14");
+		contentPane.add(btnCancelar, "cell 1 13");
 
 		JButton btnEliminar = new JButton("Eliminar Asignatura");
 		btnEliminar.addActionListener(new ActionListener() {
@@ -257,7 +274,7 @@ public class EditAsignatura extends JFrame {
 				}
 			}
 		});
-		contentPane.add(btnEliminar, "cell 2 14,alignx center");
+		contentPane.add(btnEliminar, "cell 3 13,alignx center");
 
 	}
 
@@ -278,7 +295,8 @@ public class EditAsignatura extends JFrame {
 
 	private void rellenar(Asignatura asig, JTextField a, JCheckBox b, JTextField c, JTextField d, JTextField e,
 			JTextField f, JTextField g, JTextField h, JTextField i, JTextField j, JTextField k, JTextField l,
-			JTextField m, JTextField n, JTextField o) {
+			JTextField m, JTextField n, JTextField o, JTextField curso) {
+	
 		a.setText(asig.getNombre());
 		b.setSelected(asig.isGlobal());
 		c.setText(String.valueOf(asig.getNota1()));
@@ -294,6 +312,7 @@ public class EditAsignatura extends JFrame {
 		m.setText(String.valueOf(asig.getOtros()));
 		n.setText(String.valueOf(asig.getOtrosPor()));
 		o.setText(String.valueOf(asig.getAo()));
+		curso.setText(String.valueOf(asig.getCurso()));
 		if (b.isSelected()) {
 			textNota2.setVisible(false);
 			textNota2Por.setVisible(false);
@@ -308,7 +327,7 @@ public class EditAsignatura extends JFrame {
 
 	protected Asignatura CrearAsig(JTextField nom, JCheckBox glob, JTextField n1, JTextField n1p, JTextField n2,
 			JTextField n2p, JTextField nla, JTextField nlap, JTextField npa, JTextField npap, JTextField nte,
-			JTextField ntep, JTextField not, JTextField notp, JTextField ao) {
+			JTextField ntep, JTextField not, JTextField notp, JTextField ao, JTextField curso) {
 		Asignatura a = new Asignatura();
 
 		a.setNombre(nom.getText());
@@ -326,6 +345,7 @@ public class EditAsignatura extends JFrame {
 		a.setOtros(Double.valueOf(not.getText()));
 		a.setOtrosPor(Double.valueOf(notp.getText()));
 		a.setAo(Integer.valueOf(ao.getText()));
+		a.setCurso(Integer.valueOf(curso.getText()));
 		return a;
 	}
 
@@ -352,7 +372,7 @@ public class EditAsignatura extends JFrame {
 		this.a = a;
 		rellenar(getAsig(), textNombre, boolGlobal, textNota1, textNota1Por, textNota2, textNota2Por, textNotaLab,
 				textNotaLabPor, textNotaPar, textNotaParPor, textNotaTeorico, textNotaTeoricoPor, textOtros,
-				textOtrosPor, textAo);
+				textOtrosPor, textAo, textCurso);
 	}
 
 	public Asignatura getAsig() {
