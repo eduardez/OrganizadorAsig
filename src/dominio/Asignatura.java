@@ -1,19 +1,23 @@
 package dominio;
 
+import java.util.Comparator;
+
 public class Asignatura {
-	
+
 	private String nombre;
 	private boolean global;
-	private double Nota1, Nota1Por, Nota2, Nota2Por, NotaLab, NotaLabPor, NotaPar,
-			NotaParPor, NotaTeorico, NotaTeoricoPor, Otros, OtrosPor;
-	private int ao,curso;
+	private double Nota1, Nota1Por, Nota2, Nota2Por, NotaLab, NotaLabPor, NotaPar, NotaParPor, NotaTeorico,
+			NotaTeoricoPor, Otros, OtrosPor;
+	private int ao, curso;
 
 	public Asignatura() {
-		
+
 	}
-	public Asignatura(String nombre, boolean global,double a, double b, double c, double d, double e, double f, double g, double h, double i, double j, double k, double l, int ao,int curso) {
-		this.nombre=nombre;
-		this.global=global;
+
+	public Asignatura(String nombre, boolean global, double a, double b, double c, double d, double e, double f,
+			double g, double h, double i, double j, double k, double l, int ao, int curso) {
+		this.nombre = nombre;
+		this.global = global;
 		this.Nota1 = a;
 		this.Nota1Por = b;
 		this.Nota2 = c;
@@ -26,11 +30,10 @@ public class Asignatura {
 		this.NotaTeoricoPor = j;
 		this.Otros = k;
 		this.OtrosPor = l;
-		this.ao=ao;
-		this.curso=curso;
+		this.ao = ao;
+		this.curso = curso;
 	}
 
-	
 	@Override
 	public String toString() {
 		return "Asignatura [nombre=" + nombre + ", global=" + global + ", Nota1=" + Nota1 + ", Nota1Por=" + Nota1Por
@@ -39,6 +42,7 @@ public class Asignatura {
 				+ ", NotaTeoricoPor=" + NotaTeoricoPor + ", Otros=" + Otros + ", OtrosPor=" + OtrosPor + ", ao=" + ao
 				+ "]";
 	}
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -142,23 +146,41 @@ public class Asignatura {
 	public void setOtrosPor(double OtrosPor) {
 		this.OtrosPor = OtrosPor;
 	}
+
 	public boolean isGlobal() {
 		return global;
 	}
+
 	public void setGlobal(boolean global) {
 		this.global = global;
 	}
-	public int  getAo() {
+
+	public int getAo() {
 		return ao;
 	}
-	public void setAo(int  ao) {
+
+	public void setAo(int ao) {
 		this.ao = ao;
 	}
+
 	public int getCurso() {
 		return curso;
 	}
+
 	public void setCurso(int curso) {
 		this.curso = curso;
 	}
-	
+
+	// --------------------- Metodos --------------------
+
+	public static Comparator<Asignatura> getCompNombre() {
+		Comparator comp = new Comparator<Asignatura>() {
+			@Override
+			public int compare(Asignatura a1, Asignatura a2) {
+				return a1.nombre.compareTo(a2.nombre);
+			}
+		};
+		return comp;
+	}
+
 }

@@ -106,15 +106,26 @@ public class menuPrincipal extends JFrame {
 		tablaNotas.setCellSelectionEnabled(true);
 		tablaNotas.setEnabled(false);
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, tablaNotas, -90, SpringLayout.NORTH, textDebug);
-		tablaNotas.setModel(new DefaultTableModel(new Object[][] { { null, null, null, null, null, null, null, null },
-				{ null, null, null, null, null, null, null, null }, { null, null, null, null, null, null, null, null },
-				{ null, null, null, null, null, null, null, null }, { null, null, null, null, null, null, null, null },
-				{ null, null, null, null, null, null, null, null }, { null, null, null, null, null, null, null, null },
-				{ null, null, null, null, null, null, null, null }, { null, null, null, null, null, null, null, null },
-				{ null, null, null, null, null, null, null, null }, { null, null, null, null, null, null, null, null },
-				{ null, null, null, null, null, null, null, null }, },
-				new String[] { "Asignatura", "P1 / Global", "P2", "Laboratorio", "Participacion", "Trabajo Teorico",
-						"Otros", "Total" }));
+		tablaNotas.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+			},
+			new String[] {
+				"Asignatura", "P1 / Global", "P2", "Laboratorio", "Participacion", "Trabajo Teorico", "Otros", "Total"
+			}
+		));
+		tablaNotas.getColumnModel().getColumn(0).setPreferredWidth(110);
 		met.customTabla(tablaNotas);
 
 		sl_contentPane.putConstraint(SpringLayout.WEST, tablaNotas, 15, SpringLayout.WEST, contentPane);
@@ -122,17 +133,17 @@ public class menuPrincipal extends JFrame {
 		contentPane.add(tablaNotas);
 
 		JLabel lblAsignatura = new JLabel("Asignatura");
+		sl_contentPane.putConstraint(SpringLayout.EAST, lblAsignatura, 130, SpringLayout.WEST, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, tablaNotas, 5, SpringLayout.SOUTH, lblAsignatura);
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, lblAsignatura, -327, SpringLayout.SOUTH, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.WEST, lblAsignatura, 15, SpringLayout.WEST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, lblAsignatura, -618, SpringLayout.EAST, contentPane);
 		lblAsignatura.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAsignatura.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		contentPane.add(lblAsignatura);
 
 		JLabel lblglob = new JLabel("P1 / Global");
+		sl_contentPane.putConstraint(SpringLayout.WEST, lblglob, 130, SpringLayout.WEST, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.EAST, cajaAo, 0, SpringLayout.EAST, lblglob);
-		sl_contentPane.putConstraint(SpringLayout.WEST, lblglob, 100, SpringLayout.WEST, contentPane);
 		lblglob.setHorizontalAlignment(SwingConstants.CENTER);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, lblglob, 0, SpringLayout.NORTH, lblAsignatura);
 		sl_contentPane.putConstraint(SpringLayout.EAST, lblglob, 85, SpringLayout.EAST, lblAsignatura);
@@ -140,19 +151,19 @@ public class menuPrincipal extends JFrame {
 		contentPane.add(lblglob);
 
 		JLabel lblP = new JLabel("P2");
+		sl_contentPane.putConstraint(SpringLayout.EAST, lblP, 80, SpringLayout.EAST, lblglob);
 		lblP.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		sl_contentPane.putConstraint(SpringLayout.WEST, lblP, 0, SpringLayout.EAST, lblglob);
-		sl_contentPane.putConstraint(SpringLayout.EAST, lblP, 85, SpringLayout.EAST, lblglob);
 		lblP.setHorizontalAlignment(SwingConstants.CENTER);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, lblP, 0, SpringLayout.NORTH, lblAsignatura);
 		contentPane.add(lblP);
 
 		JLabel lblLaboratorio = new JLabel("Laboratorio");
+		sl_contentPane.putConstraint(SpringLayout.EAST, lblLaboratorio, 80, SpringLayout.EAST, lblP);
 		lblLaboratorio.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblLaboratorio.setHorizontalAlignment(SwingConstants.CENTER);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, lblLaboratorio, 0, SpringLayout.NORTH, lblAsignatura);
 		sl_contentPane.putConstraint(SpringLayout.WEST, lblLaboratorio, 0, SpringLayout.EAST, lblP);
-		sl_contentPane.putConstraint(SpringLayout.EAST, lblLaboratorio, 85, SpringLayout.EAST, lblP);
 		contentPane.add(lblLaboratorio);
 
 		JLabel lblParticipacion = new JLabel("Participacion");
@@ -164,7 +175,7 @@ public class menuPrincipal extends JFrame {
 		contentPane.add(lblParticipacion);
 
 		JLabel lblteo = new JLabel("Trab. Teorico");
-		sl_contentPane.putConstraint(SpringLayout.EAST, lblteo, 90, SpringLayout.EAST, lblParticipacion);
+		sl_contentPane.putConstraint(SpringLayout.EAST, lblteo, 80, SpringLayout.EAST, lblParticipacion);
 		lblteo.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblteo.setHorizontalAlignment(SwingConstants.CENTER);
 		sl_contentPane.putConstraint(SpringLayout.NORTH, lblteo, 0, SpringLayout.NORTH, lblAsignatura);
@@ -172,20 +183,20 @@ public class menuPrincipal extends JFrame {
 		contentPane.add(lblteo);
 
 		JLabel lblOtros = new JLabel("Otros");
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, lblOtros, -15, SpringLayout.NORTH, tablaNotas);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, lblOtros, -5, SpringLayout.NORTH, tablaNotas);
+		sl_contentPane.putConstraint(SpringLayout.EAST, lblOtros, 80, SpringLayout.EAST, lblteo);
 		lblOtros.setFont(new Font("Dialog", Font.PLAIN, 12));
 		lblOtros.setEnabled(true);
 		lblOtros.setHorizontalAlignment(SwingConstants.CENTER);
 		sl_contentPane.putConstraint(SpringLayout.WEST, lblOtros, 0, SpringLayout.EAST, lblteo);
-		sl_contentPane.putConstraint(SpringLayout.EAST, lblOtros, 85, SpringLayout.EAST, lblteo);
 		contentPane.add(lblOtros);
 
 		JLabel lblTotal = new JLabel("Total");
+		sl_contentPane.putConstraint(SpringLayout.EAST, lblTotal, 80, SpringLayout.EAST, lblOtros);
 		lblTotal.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblTotal.setHorizontalAlignment(SwingConstants.CENTER);
 		sl_contentPane.putConstraint(SpringLayout.WEST, lblTotal, 0, SpringLayout.EAST, lblOtros);
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, lblTotal, 0, SpringLayout.SOUTH, lblAsignatura);
-		sl_contentPane.putConstraint(SpringLayout.EAST, lblTotal, 85, SpringLayout.EAST, lblOtros);
 		contentPane.add(lblTotal);
 
 		JComboBox cajaOtros = new JComboBox();

@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.TextArea;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 import javax.swing.JComboBox;
@@ -26,7 +27,7 @@ public class metod {
 		try {
 
 			cleanTabla(tablaNotas);
-
+			Collections.sort(asigArray, Asignatura.getCompNombre());
 			for (int i = 0; i < asigArray.size(); i++) {
 				tablaNotas.getModel().setValueAt(asigArray.get(i).getNombre(), i, 0);
 				tablaNotas.getModel().setValueAt(asigArray.get(i).getNota1(), i, 1);
@@ -51,11 +52,8 @@ public class metod {
 		CustomTableCellRenderer colorTotal = new CustomTableCellRenderer();
 		colorTotal.setForeground(Color.RED);
 		colorTotal.setHorizontalAlignment(SwingConstants.CENTER);
-		for (int j = 0; j < tablaNotas.getModel().getRowCount(); j++) {
 			for (int i = 0; i < tablaNotas.getModel().getColumnCount(); i++) {
-				tablaNotas.getColumnModel().getColumn(7).setCellRenderer(colorTotal);
-
-			}
+				tablaNotas.getColumnModel().getColumn(i).setCellRenderer(colorTotal);
 		}
 	}
 
@@ -103,8 +101,12 @@ public class metod {
 
 	public JComboBox updateBox(JComboBox caja, String[] valores) throws Exception {
 		caja.removeAllItems();
+		ArrayList<String> val=new ArrayList<String>();
+		for(int i=0;i<valores.length;i++)val.add(valores[i]);
+		val.sort(null);
 		for (int i = 0; i < valores.length; i++)
-			caja.addItem(valores[i]);
+			caja.addItem(val.get(i));
+		
 		return caja;
 	}
 
@@ -227,6 +229,21 @@ public class metod {
 		}
 		cajaAsig = updateBox(cajaAsig, nomAsig(nuovoAsig));
 		return nuovoAsig;
+	}
+	// ---------------------- Otros Metodos -------------------
+	
+	public boolean comprobAsig(Asignatura a) throws Exception {
+		boolean esta=false;
+		ArrayList<Asignatura> todas=getAsig();
+		
+		for(int i=0;i<todas.size() && !esta;i++) {
+			if(todas.get(i).getNombre().equals(a.getNombre())&&todas.get(i).getAo()==a.getAo()) {
+				esta=true;
+				System.out.println("Cuidadoooooorrr");
+			}
+		}
+		
+		return !esta;
 	}
 
 }

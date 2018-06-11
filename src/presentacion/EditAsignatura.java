@@ -244,11 +244,17 @@ public class EditAsignatura extends JFrame {
 					rellenarCero(text);
 					try {
 						ag.EliminarAsig(a);
-						ag.insertarAsig(CrearAsig(textNombre, boolGlobal, textNota1, textNota1Por, textNota2,
-								textNota2Por, textNotaLab, textNotaLabPor, textNotaPar, textNotaParPor, textNotaTeorico,
-								textNotaTeoricoPor, textOtros, textOtrosPor, textAo, textCurso));
-						System.out.println("Modificada");
-					} catch (SQLException e) {
+						Asignatura asi=CrearAsig(textNombre, boolGlobal, textNota1, textNota1Por, textNota2,
+								textNota2Por, textNotaLab, textNotaLabPor, textNotaPar, textNotaParPor,
+								textNotaTeorico, textNotaTeoricoPor, textOtros, textOtrosPor, textAo, textCurso);
+						
+						if(met.comprobAsig(asi)) {
+						ag.insertarAsig(asi);
+						}else {
+							debug.append("Esta asignatura ya existe\n");
+							ag.insertarAsig(a);
+						}
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				} else {

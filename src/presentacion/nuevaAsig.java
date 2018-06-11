@@ -58,7 +58,7 @@ public class nuevaAsig extends JFrame {
 	private JLabel lblCurso;
 
 	public nuevaAsig(JComboBox cajaAsig, ArrayList<Asignatura> asigArray, JComboBox cajaAo) throws SQLException {
-		
+
 		metod met = new metod();
 		Dialogos di = new Dialogos();
 		Agente ag = new Agente();
@@ -81,23 +81,23 @@ public class nuevaAsig extends JFrame {
 		textNombre = new JTextField();
 		contentPane.add(textNombre, "cell 1 1 3 1,growx");
 		textNombre.setColumns(10);
-				
-						lblAo = new JLabel("A\u00F1o:");
-						contentPane.add(lblAo, "cell 0 2,alignx right");
-		
-				textAo = new JTextField();
-				contentPane.add(textAo, "cell 1 2,growx");
-				textAo.setColumns(10);
-		
-				lblCurso = new JLabel("Curso:");
-				lblCurso.setHorizontalAlignment(SwingConstants.RIGHT);
-				lblCurso.setEnabled(true);
-				contentPane.add(lblCurso, "cell 2 2,alignx trailing");
-		
-				textCurso = new JTextField();
-				contentPane.add(textCurso, "cell 3 2,growx");
-				textCurso.setColumns(10);
-		
+
+		lblAo = new JLabel("A\u00F1o:");
+		contentPane.add(lblAo, "cell 0 2,alignx right");
+
+		textAo = new JTextField();
+		contentPane.add(textAo, "cell 1 2,growx");
+		textAo.setColumns(10);
+
+		lblCurso = new JLabel("Curso:");
+		lblCurso.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblCurso.setEnabled(true);
+		contentPane.add(lblCurso, "cell 2 2,alignx trailing");
+
+		textCurso = new JTextField();
+		contentPane.add(textCurso, "cell 3 2,growx");
+		textCurso.setColumns(10);
+
 		lblPorcentaje = new JLabel("Porcentaje ( % )");
 		contentPane.add(lblPorcentaje, "cell 3 3,alignx center");
 
@@ -186,9 +186,9 @@ public class nuevaAsig extends JFrame {
 		debug = new TextArea();
 		debug.setEditable(false);
 		contentPane.add(debug, "cell 0 15 4 2,grow");
-		
+
 		JButton btnGuardar = new JButton("Guardar");
-		
+
 		contentPane.add(btnGuardar, "cell 0 14,alignx center");
 
 		JButton btnCancelar = new JButton("Cancelar");
@@ -196,7 +196,6 @@ public class nuevaAsig extends JFrame {
 
 		JButton btnLimpiar = new JButton("Limpiar");
 		contentPane.add(btnLimpiar, "cell 3 14,alignx center");
-
 
 		// ---------------------------- COPIPASTE --------------------------------
 		// textNombre
@@ -215,7 +214,7 @@ public class nuevaAsig extends JFrame {
 		// ------------------------------ FIN ------------------------------------
 
 		// ------------ Acciones --------------
-		
+
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -224,10 +223,17 @@ public class nuevaAsig extends JFrame {
 						int opt = di.dialogAsig();
 						if (opt == 0) {
 							debug.append("Rellenados con 0\n");
-							rellenarCero(text,por);
-							ag.insertarAsig(CrearAsig(textNombre, boolGlobal, textNota1, textNota1Por, textNota2,
+							rellenarCero(text, por);
+
+							Asignatura a = CrearAsig(textNombre, boolGlobal, textNota1, textNota1Por, textNota2,
 									textNota2Por, textNotaLab, textNotaLabPor, textNotaPar, textNotaParPor,
-									textNotaTeorico, textNotaTeoricoPor, textOtros, textOtrosPor, textAo, textCurso));
+									textNotaTeorico, textNotaTeoricoPor, textOtros, textOtrosPor, textAo, textCurso);
+
+							if (met.comprobAsig(a)) {
+								ag.insertarAsig(a);
+							} else {
+								debug.append("Esta asignatura ya existe\n");
+							}
 						} else {
 							debug.append("Cancelado\n");
 						}
@@ -237,13 +243,12 @@ public class nuevaAsig extends JFrame {
 
 				} catch (SQLException e) {
 					debug.append("Error en base de datos. \n");
-				}catch(Exception e) {
+				} catch (Exception e) {
 					debug.append("Error creando asignatura. \n");
 				}
 			}
 		});
-		
-		
+
 		boolGlobal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (textNota2.isVisible()) {
@@ -257,13 +262,14 @@ public class nuevaAsig extends JFrame {
 				}
 			}
 		});
-		
+
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent arg0) {
 				try {
-					met.ActAsig(cajaAsig,asigArray,cajaAo);
-					//met.updateBox(cajaAo,met.aosAsig(asigArray)); ESTO DA ERROR Y ERA PARA CUANDO AÑADES UNA NUEVA ASIG CON OTRO AÑO NO EN LA TABLA AÑOS, ACTUALIZA LA TABLA
+					met.ActAsig(cajaAsig, asigArray, cajaAo);
+					// met.updateBox(cajaAo,met.aosAsig(asigArray)); ESTO DA ERROR Y ERA PARA CUANDO
+					// AÑADES UNA NUEVA ASIG CON OTRO AÑO NO EN LA TABLA AÑOS, ACTUALIZA LA TABLA
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -271,9 +277,9 @@ public class nuevaAsig extends JFrame {
 			}
 		});
 	}
-	
-	// ------------------------------------------ METODOS ------------------------------------------
 
+	// ------------------------------------------ METODOS
+	// ------------------------------------------
 
 	protected Asignatura CrearAsig(JTextField nom, JCheckBox glob, JTextField n1, JTextField n1p, JTextField n2,
 			JTextField n2p, JTextField nla, JTextField nlap, JTextField npa, JTextField npap, JTextField nte,
@@ -311,11 +317,12 @@ public class nuevaAsig extends JFrame {
 		return por;
 	}
 
-	private void rellenarCero(JTextField[] text,JTextField[] por) {
+	private void rellenarCero(JTextField[] text, JTextField[] por) {
 		for (int i = 0; i < text.length; i++) {
 			if (text[i].getText().equals(""))
 				text[i].setText("0.0");
-		}for (int i = 0; i < por.length; i++) {
+		}
+		for (int i = 0; i < por.length; i++) {
 			if (por[i].getText().equals(""))
 				por[i].setText("0.0");
 		}
