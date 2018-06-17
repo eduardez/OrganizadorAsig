@@ -27,9 +27,16 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JSeparator;
+import net.miginfocom.swing.MigLayout;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.MatteBorder;
+import javax.swing.border.TitledBorder;
 
 public class menuPrincipal extends JFrame {
 
@@ -45,16 +52,21 @@ public class menuPrincipal extends JFrame {
 	Dialogos di = new Dialogos();
 
 	public menuPrincipal() throws Exception {
+		try {// El buen look an fil
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		setIconImage(Toolkit.getDefaultToolkit().getImage(menuPrincipal.class.getResource("/icon.png")));
 		setResizable(false);
-		setTitle("Organizador de Asignaturas - V.1.2.3");
+		setTitle("Organizador de Asignaturas - v.1.3.5");
 		asigNombre = nomAsig();
 		asigArray = getAsig();
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 734, 502);
-
-	
 
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(230, 230, 250));
@@ -63,32 +75,13 @@ public class menuPrincipal extends JFrame {
 		SpringLayout sl_contentPane = new SpringLayout();
 		contentPane.setLayout(sl_contentPane);
 
-		JComboBox cajaAsig = new JComboBox();
-		sl_contentPane.putConstraint(SpringLayout.WEST, cajaAsig, 559, SpringLayout.WEST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, cajaAsig, -10, SpringLayout.EAST, contentPane);
-		cajaAsig.setModel(new DefaultComboBoxModel(asigNombre));
-		contentPane.add(cajaAsig);
-
-		JButton botonNuevAsig = new JButton("A\u00F1adir Asignatura");
-		sl_contentPane.putConstraint(SpringLayout.NORTH, botonNuevAsig, 1, SpringLayout.NORTH, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.WEST, botonNuevAsig, 559, SpringLayout.WEST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, botonNuevAsig, -10, SpringLayout.EAST, contentPane);
-
-		contentPane.add(botonNuevAsig);
-
-		JButton botonEditAsig = new JButton("Editar Asignatura");
-		sl_contentPane.putConstraint(SpringLayout.WEST, botonEditAsig, 559, SpringLayout.WEST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.EAST, botonEditAsig, -10, SpringLayout.EAST, contentPane);
-		sl_contentPane.putConstraint(SpringLayout.NORTH, cajaAsig, 6, SpringLayout.SOUTH, botonEditAsig);
-		sl_contentPane.putConstraint(SpringLayout.NORTH, botonEditAsig, 6, SpringLayout.SOUTH, botonNuevAsig);
-		contentPane.add(botonEditAsig);
-
 		JLabel lblCurso = new JLabel("Curso:");
-		sl_contentPane.putConstraint(SpringLayout.SOUTH, lblCurso, 0, SpringLayout.SOUTH, cajaAsig);
 		contentPane.add(lblCurso);
 
 		JComboBox cajaAo = new JComboBox();
-		sl_contentPane.putConstraint(SpringLayout.NORTH, cajaAo, 0, SpringLayout.NORTH, cajaAsig);
+		sl_contentPane.putConstraint(SpringLayout.NORTH, lblCurso, 0, SpringLayout.NORTH, cajaAo);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, lblCurso, 0, SpringLayout.SOUTH, cajaAo);
+		sl_contentPane.putConstraint(SpringLayout.EAST, lblCurso, -6, SpringLayout.WEST, cajaAo);
 		cajaAo.setModel(new DefaultComboBoxModel(met.aosAsig(asigArray)));
 		contentPane.add(cajaAo);
 
@@ -101,30 +94,19 @@ public class menuPrincipal extends JFrame {
 
 		tablaNotas = new JTable();
 		sl_contentPane.putConstraint(SpringLayout.WEST, cajaAo, 50, SpringLayout.WEST, tablaNotas);
-		sl_contentPane.putConstraint(SpringLayout.WEST, lblCurso, 0, SpringLayout.WEST, tablaNotas);
 		tablaNotas.setColumnSelectionAllowed(true);
 		tablaNotas.setCellSelectionEnabled(true);
 		tablaNotas.setEnabled(false);
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, tablaNotas, -90, SpringLayout.NORTH, textDebug);
-		tablaNotas.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-			},
-			new String[] {
-				"Asignatura", "P1 / Global", "P2", "Laboratorio", "Participacion", "Trabajo Teorico", "Otros", "Total"
-			}
-		));
+		tablaNotas.setModel(new DefaultTableModel(new Object[][] { { null, null, null, null, null, null, null, null },
+				{ null, null, null, null, null, null, null, null }, { null, null, null, null, null, null, null, null },
+				{ null, null, null, null, null, null, null, null }, { null, null, null, null, null, null, null, null },
+				{ null, null, null, null, null, null, null, null }, { null, null, null, null, null, null, null, null },
+				{ null, null, null, null, null, null, null, null }, { null, null, null, null, null, null, null, null },
+				{ null, null, null, null, null, null, null, null }, { null, null, null, null, null, null, null, null },
+				{ null, null, null, null, null, null, null, null }, },
+				new String[] { "Asignatura", "P1 / Global", "P2", "Laboratorio", "Participacion", "Trabajo Teorico",
+						"Otros", "Total" }));
 		tablaNotas.getColumnModel().getColumn(0).setPreferredWidth(110);
 		met.customTabla(tablaNotas);
 
@@ -199,72 +181,135 @@ public class menuPrincipal extends JFrame {
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, lblTotal, 0, SpringLayout.SOUTH, lblAsignatura);
 		contentPane.add(lblTotal);
 
-		JComboBox cajaOtros = new JComboBox();
-		cajaOtros.setModel(new DefaultComboBoxModel(new String[] { "- Otras Opciones -", "Notas por curso" }));
-		sl_contentPane.putConstraint(SpringLayout.NORTH, cajaOtros, 1, SpringLayout.NORTH, botonNuevAsig);
-		sl_contentPane.putConstraint(SpringLayout.WEST, cajaOtros, 0, SpringLayout.WEST, lblLaboratorio);
-		sl_contentPane.putConstraint(SpringLayout.EAST, cajaOtros, -5, SpringLayout.EAST, lblParticipacion);
-		contentPane.add(cajaOtros);
-		
-		
-		
 		JLabel edulcorante = new JLabel();
 		sl_contentPane.putConstraint(SpringLayout.NORTH, edulcorante, -45, SpringLayout.SOUTH, contentPane);
 		sl_contentPane.putConstraint(SpringLayout.WEST, edulcorante, 251, SpringLayout.EAST, textDebug);
 		sl_contentPane.putConstraint(SpringLayout.SOUTH, edulcorante, 0, SpringLayout.SOUTH, textDebug);
 		sl_contentPane.putConstraint(SpringLayout.EAST, edulcorante, 0, SpringLayout.EAST, contentPane);
 		edulcorante.setToolTipText("Orgullosamente hecho por mis huevos morenos.");
-		edulcorante.setIcon(new ImageIcon(menuPrincipal.class.getResource("/profile.jpg")));
+		edulcorante.setIcon(new ImageIcon(menuPrincipal.class.getResource("/profileLitle.png")));
 		contentPane.add(edulcorante);
 
+		JSeparator separator = new JSeparator();
+		sl_contentPane.putConstraint(SpringLayout.NORTH, separator, 18, SpringLayout.SOUTH, tablaNotas);
+		sl_contentPane.putConstraint(SpringLayout.WEST, separator, 0, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, separator, 27, SpringLayout.SOUTH, tablaNotas);
+		sl_contentPane.putConstraint(SpringLayout.EAST, separator, 0, SpringLayout.EAST, contentPane);
+		contentPane.add(separator);
 		
+		JButton btnCalend = new JButton("Calendario");
+		sl_contentPane.putConstraint(SpringLayout.NORTH, cajaAo, 34, SpringLayout.SOUTH, btnCalend);
+		sl_contentPane.putConstraint(SpringLayout.NORTH, btnCalend, 0, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.WEST, btnCalend, 0, SpringLayout.WEST, textDebug);
+		btnCalend.setIcon(new ImageIcon(menuPrincipal.class.getResource("/com/sun/javafx/scene/web/skin/UnorderedListBullets_16x16_JFX.png")));
+		contentPane.add(btnCalend);
 		
-		// ------------------------------------------Acciones------------------------------------------
-		cajaOtros.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		JButton btnCursos = new JButton("Cursos");
+		sl_contentPane.putConstraint(SpringLayout.NORTH, btnCursos, 0, SpringLayout.NORTH, btnCalend);
+		sl_contentPane.putConstraint(SpringLayout.WEST, btnCursos, 0, SpringLayout.WEST, lblglob);
+		sl_contentPane.putConstraint(SpringLayout.EAST, btnCursos, 120, SpringLayout.EAST, btnCalend);
+		btnCursos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				notasCurso not;
 				try {
-					met.otrasOp(cajaOtros);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					not = new notasCurso();
+					not.setVisible(true);
+				} catch (Exception e1) {
+					e1.printStackTrace();
 				}
 			}
 		});
+		btnCursos.setIcon(new ImageIcon(menuPrincipal.class.getResource("/com/sun/javafx/scene/web/skin/OrderedListNumbers_16x16_JFX.png")));
+		contentPane.add(btnCursos);
 		
+		JPanel panelAsig = new JPanel();
+		sl_contentPane.putConstraint(SpringLayout.NORTH, panelAsig, 0, SpringLayout.NORTH, btnCalend);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, panelAsig, -23, SpringLayout.NORTH, lblParticipacion);
+		sl_contentPane.putConstraint(SpringLayout.EAST, panelAsig, -15, SpringLayout.EAST, contentPane);
+		panelAsig.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Menu de Asignaturas", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		contentPane.add(panelAsig);
+		panelAsig.setLayout(null);
 		
+				JButton botonNuevAsig = new JButton("A\u00F1adir Asignatura");
+				botonNuevAsig.setBounds(10, 15, 153, 23);
+				panelAsig.add(botonNuevAsig);
+				sl_contentPane.putConstraint(SpringLayout.EAST, botonNuevAsig, -29, SpringLayout.EAST, contentPane);
+				sl_contentPane.putConstraint(SpringLayout.WEST, botonNuevAsig, 0, SpringLayout.WEST, lblOtros);
+				sl_contentPane.putConstraint(SpringLayout.NORTH, botonNuevAsig, 1, SpringLayout.NORTH, btnCalend);
+				
+						JButton botonEditAsig = new JButton("Editar Asignatura");
+						botonEditAsig.setBounds(10, 38, 153, 23);
+						panelAsig.add(botonEditAsig);
+						sl_contentPane.putConstraint(SpringLayout.NORTH, botonEditAsig, 30, SpringLayout.NORTH, contentPane);
+						sl_contentPane.putConstraint(SpringLayout.WEST, botonEditAsig, 559, SpringLayout.WEST, contentPane);
+						sl_contentPane.putConstraint(SpringLayout.EAST, botonEditAsig, -10, SpringLayout.EAST, contentPane);
+						
+								JComboBox cajaAsig = new JComboBox();
+								cajaAsig.setBounds(10, 61, 153, 23);
+								panelAsig.add(cajaAsig);
+								sl_contentPane.putConstraint(SpringLayout.WEST, cajaAsig, 559, SpringLayout.WEST, contentPane);
+								sl_contentPane.putConstraint(SpringLayout.EAST, cajaAsig, -10, SpringLayout.EAST, contentPane);
+								cajaAsig.setModel(new DefaultComboBoxModel(asigNombre));
+								sl_contentPane.putConstraint(SpringLayout.NORTH, cajaAsig, 6, SpringLayout.SOUTH, botonEditAsig);
+								
+								JSeparator separator_1 = new JSeparator();
+								sl_contentPane.putConstraint(SpringLayout.EAST, separator_1, -209, SpringLayout.EAST, contentPane);
+								sl_contentPane.putConstraint(SpringLayout.WEST, panelAsig, 15, SpringLayout.EAST, separator_1);
+								sl_contentPane.putConstraint(SpringLayout.NORTH, separator_1, 6, SpringLayout.SOUTH, btnCalend);
+								sl_contentPane.putConstraint(SpringLayout.WEST, separator_1, 0, SpringLayout.WEST, textDebug);
+								contentPane.add(separator_1);
+								
+								JButton btnHorario = new JButton("Horario");
+								sl_contentPane.putConstraint(SpringLayout.WEST, btnHorario, 12, SpringLayout.EAST, btnCursos);
+								sl_contentPane.putConstraint(SpringLayout.SOUTH, btnHorario, 0, SpringLayout.SOUTH, btnCalend);
+								sl_contentPane.putConstraint(SpringLayout.EAST, btnHorario, -170, SpringLayout.WEST, panelAsig);
+								btnHorario.setIcon(new ImageIcon(menuPrincipal.class.getResource("/org/hsqldb/util/run_exc.gif")));
+								sl_contentPane.putConstraint(SpringLayout.NORTH, btnHorario, 0, SpringLayout.NORTH, btnCalend);
+								contentPane.add(btnHorario);
+						
+								botonEditAsig.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent arg0) {
+										try {
+											int inde = cajaAsig.getSelectedIndex();
+											EditAsignatura e = new EditAsignatura(cajaAsig,
+													asigArray.get(inde).getNombre() + " - " + asigArray.get(inde).getAo(), asigArray, cajaAo);
+											e.setAsig(asigArray.get(inde));
+											e.setLocationRelativeTo(null);
+											e.setVisible(true);
+										} catch (IndexOutOfBoundsException e) {
+											textDebug.setText("Problema de indices en el array de asignaturas. \nCambia de año y solucionao\n");
+										} catch (Exception e) {
+											textDebug.setText("Ha pasado algo, algo malo, pero tranquilo, que el mundo no va a explotar.\n");
+										}
+									}
+								});
+				botonNuevAsig.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						nuevaAsig nu;
+						try {
+							nu = new nuevaAsig(cajaAsig, asigArray, cajaAo);
+							nu.setVisible(true);
+							nu.setLocationRelativeTo(null);
+						} catch (SQLException e1) {
+							e1.printStackTrace();
+						}
+					}
+				});
+
+		// ------------------------------------------Acciones------------------------------------------
+		btnCalend.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FrameCalend cal = new FrameCalend();
+				cal.setVisible(true);
+				cal.setLocationRelativeTo(null);
+				dispose();
+			}
+		});
+
 		edulcorante.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				di.dialogEdulcorante();
-			}
-		});
-
-		botonEditAsig.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					int inde = cajaAsig.getSelectedIndex();
-					EditAsignatura e = new EditAsignatura(cajaAsig,
-							asigArray.get(inde).getNombre() + " - " + asigArray.get(inde).getAo(), asigArray, cajaAo);
-					e.setAsig(asigArray.get(inde));
-					e.setLocationRelativeTo(null);
-					e.setVisible(true);
-				} catch (IndexOutOfBoundsException e) {
-					textDebug.setText("Problema de indices en el array de asignaturas. \nCambia de año y solucionao\n");
-				} catch (Exception e) {
-					textDebug.setText("Ha pasado algo, algo malo, pero tranquilo, que el mundo no av a explotar.\n");
-				}
-			}
-		});
-		botonNuevAsig.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				nuevaAsig nu;
-				try {
-					nu = new nuevaAsig(cajaAsig, asigArray, cajaAo);
-					nu.setVisible(true);
-					nu.setLocationRelativeTo(null);
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
 			}
 		});
 		cajaAo.addActionListener(new ActionListener() {
@@ -277,6 +322,9 @@ public class menuPrincipal extends JFrame {
 				}
 			}
 		});
+		if (cajaAo.getItemCount() > 1) {
+			cajaAo.setSelectedIndex(1);
+		}
 	}
 	// ------------------------------------------METODOS------------------------------------------
 

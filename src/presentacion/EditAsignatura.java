@@ -73,8 +73,8 @@ public class EditAsignatura extends JFrame {
 		contentPane.setBackground(new Color(230, 230, 250));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(
-				new MigLayout("", "[grow,left][grow,center][][grow,right]", "[][][][][][][][][][][][][][][][][grow]"));
+		contentPane.setLayout(new MigLayout("", "[grow,left][grow,center][][grow,right]",
+				"[][][][][][][][][][][][][][][][][][grow]"));
 
 		lblNombreAsignatura = new JLabel("Nombre Asignatura:");
 		lblNombreAsignatura.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -194,9 +194,13 @@ public class EditAsignatura extends JFrame {
 		contentPane.add(textOtrosPor, "cell 3 9,growx");
 		textOtrosPor.setColumns(10);
 
+		btnActivarEdicionCompleta = new JButton("Activar edicion completa");
+
+		contentPane.add(btnActivarEdicionCompleta, "cell 3 12,aligny top");
+
 		debug = new TextArea();
 		debug.setEditable(false);
-		contentPane.add(debug, "cell 0 14 4 2,grow");
+		contentPane.add(debug, "cell 0 15 4 2,grow");
 
 		// ---------------------------- COPIPASTE --------------------------------
 		// textNombre
@@ -212,18 +216,6 @@ public class EditAsignatura extends JFrame {
 		JTextField[] por = crearGrupo(textNota1Por, textNota2Por, textNotaLabPor, textNotaParPor, textNotaTeoricoPor,
 				textOtrosPor);
 
-		btnActivarEdicionCompleta = new JButton("Activar edicion completa");
-		btnActivarEdicionCompleta.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				textNombre.setEditable(true);
-				textCurso.setEditable(true);
-				boolGlobal.setEnabled(true);;
-				for (int i = 0; i < por.length; i++)
-					por[i].setEditable(true);
-			}
-		});
-		contentPane.add(btnActivarEdicionCompleta, "cell 3 16");
-
 		// ------------------------------ BOTONES ------------------------------------
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -236,21 +228,52 @@ public class EditAsignatura extends JFrame {
 				}
 			}
 		});
+		boolGlobal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (textNota2.isVisible()) {
+					textNota2.setVisible(false);
+					textNota2Por.setVisible(false);
+
+				} else {
+					textNota2.setVisible(true);
+					textNota2Por.setVisible(true);
+
+				}
+			}
+		});
+		btnActivarEdicionCompleta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				textNombre.setEditable(true);
+				textCurso.setEditable(true);
+				boolGlobal.setEnabled(true);
+				if (boolGlobal.isSelected()) {
+					textNota2.setVisible(false);
+					textNota2Por.setVisible(false);
+				} else {
+					textNota2.setVisible(true);
+					textNota2Por.setVisible(true);
+				}
+				for (int i = 0; i < por.length; i++)
+					por[i].setEditable(true);
+			}
+		});
 		JButton btnGuardar = new JButton("Guardar");
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int opt = di.dialogAsig(); // Preguntar si se desea autocompletar valores
 				if (opt == 0) {
 					rellenarCero(text);
+
 					try {
 						ag.EliminarAsig(a);
-						Asignatura asi=CrearAsig(textNombre, boolGlobal, textNota1, textNota1Por, textNota2,
-								textNota2Por, textNotaLab, textNotaLabPor, textNotaPar, textNotaParPor,
-								textNotaTeorico, textNotaTeoricoPor, textOtros, textOtrosPor, textAo, textCurso);
-						
-						if(met.comprobAsig(asi)) {
-						ag.insertarAsig(asi);
-						}else {
+						Asignatura asi = CrearAsig(textNombre, boolGlobal, textNota1, textNota1Por, textNota2,
+								textNota2Por, textNotaLab, textNotaLabPor, textNotaPar, textNotaParPor, textNotaTeorico,
+								textNotaTeoricoPor, textOtros, textOtrosPor, textAo, textCurso);
+
+						if (met.comprobAsig(asi)) {
+							ag.insertarAsig(asi);
+							dispose();
+						} else {
 							debug.append("Esta asignatura ya existe\n");
 							ag.insertarAsig(a);
 						}
@@ -263,10 +286,15 @@ public class EditAsignatura extends JFrame {
 
 			}
 		});
-		contentPane.add(btnGuardar, "cell 0 13,alignx center");
+		contentPane.add(btnGuardar, "cell 0 14,alignx center");
 
 		JButton btnCancelar = new JButton("Cancelar");
-		contentPane.add(btnCancelar, "cell 1 13");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		contentPane.add(btnCancelar, "cell 1 14");
 
 		JButton btnEliminar = new JButton("Eliminar Asignatura");
 		btnEliminar.addActionListener(new ActionListener() {
@@ -280,7 +308,7 @@ public class EditAsignatura extends JFrame {
 				}
 			}
 		});
-		contentPane.add(btnEliminar, "cell 3 13,alignx center");
+		contentPane.add(btnEliminar, "cell 3 14,alignx center");
 
 	}
 
@@ -302,7 +330,7 @@ public class EditAsignatura extends JFrame {
 	private void rellenar(Asignatura asig, JTextField a, JCheckBox b, JTextField c, JTextField d, JTextField e,
 			JTextField f, JTextField g, JTextField h, JTextField i, JTextField j, JTextField k, JTextField l,
 			JTextField m, JTextField n, JTextField o, JTextField curso) {
-	
+
 		a.setText(asig.getNombre());
 		b.setSelected(asig.isGlobal());
 		c.setText(String.valueOf(asig.getNota1()));

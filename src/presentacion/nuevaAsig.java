@@ -71,8 +71,8 @@ public class nuevaAsig extends JFrame {
 		contentPane.setBackground(new Color(230, 230, 250));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(
-				new MigLayout("", "[grow,left][grow,center][][grow,right]", "[][][][][][][][][][][][][][][][][grow]"));
+		contentPane.setLayout(new MigLayout("", "[grow,left][grow,center][][grow,right]",
+				"[][][][][][][][][][][][][][][][][][grow]"));
 
 		lblNombreAsignatura = new JLabel("Nombre Asignatura:");
 		lblNombreAsignatura.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -183,54 +183,49 @@ public class nuevaAsig extends JFrame {
 		contentPane.add(textOtrosPor, "cell 3 10,growx");
 		textOtrosPor.setColumns(10);
 
-		debug = new TextArea();
-		debug.setEditable(false);
-		contentPane.add(debug, "cell 0 15 4 2,grow");
-
 		JButton btnGuardar = new JButton("Guardar");
 
-		contentPane.add(btnGuardar, "cell 0 14,alignx center");
-
-		JButton btnCancelar = new JButton("Cancelar");
-		contentPane.add(btnCancelar, "cell 1 14");
-
-		JButton btnLimpiar = new JButton("Limpiar");
-		contentPane.add(btnLimpiar, "cell 3 14,alignx center");
-
-		// ---------------------------- COPIPASTE --------------------------------
-		// textNombre
-		// textNota1Por,textNota2,textNota2Por,textNotaLab,textNotaLabPor,textNotaPar,textNotaParPor,textNotaTeorico,textNotaTeoricoPor,textOtros,textOtros
-
-		/*
-		 * JTextField[] val = Grupo(textNombre,
-		 * boolGlobal,textNota1Por,textNota2,textNota2Por,textNotaLab,textNotaLabPor,
-		 * textNotaPar,textNotaParPor,
-		 * textNotaTeorico,textNotaTeoricoPor,textOtros,textOtros);
-		 */
-		JTextField[] text = crearGrupo(textNota1, textNota2, textNotaLab, textNotaPar, textNotaTeorico, textOtros);
-		JTextField[] por = crearGrupo(textNota1Por, textNota2Por, textNotaLabPor, textNotaParPor, textNotaTeoricoPor,
-				textOtrosPor);
+		contentPane.add(btnGuardar, "cell 0 12,alignx center");
 
 		// ------------------------------ FIN ------------------------------------
 
 		// ------------ Acciones --------------
 
+		JButton btnCancelar = new JButton("Cancelar");
+		contentPane.add(btnCancelar, "cell 1 12");
+
+		JButton btnLimpiar = new JButton("Limpiar");
+		contentPane.add(btnLimpiar, "cell 3 12,alignx center");
+
+		debug = new TextArea();
+		debug.setEditable(false);
+		contentPane.add(debug, "cell 0 13 4 2,alignx center,aligny top");
+
+		// ---------------------------- COPIPASTE --------------------------------
+
+		JTextField[] text = crearGrupo(textNota1, textNota2, textNotaLab, textNotaPar, textNotaTeorico, textOtros);
+		JTextField[] por = crearGrupo(textNota1Por, textNota2Por, textNotaLabPor, textNotaParPor, textNotaTeoricoPor,
+				textOtrosPor);
+		JTextField[] todoText = { textNombre, textNota1, textNota1Por, textNota2, textNota2Por, textNotaLab,
+				textNotaLabPor, textNotaPar, textNotaParPor, textNotaTeorico, textNotaTeoricoPor, textOtros,
+				textOtrosPor, textAo, textCurso };
+
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 
-					if (met.compPor(por, debug)) {
-						int opt = di.dialogAsig();
-						if (opt == 0) {
-							debug.append("Rellenados con 0\n");
-							rellenarCero(text, por);
-
+					int opt = di.dialogAsig();
+					if (opt == 0) {
+						debug.append("Rellenados con 0\n");
+						rellenarCero(text, por);
+						if (met.compPor(por, debug)) {
 							Asignatura a = CrearAsig(textNombre, boolGlobal, textNota1, textNota1Por, textNota2,
 									textNota2Por, textNotaLab, textNotaLabPor, textNotaPar, textNotaParPor,
 									textNotaTeorico, textNotaTeoricoPor, textOtros, textOtrosPor, textAo, textCurso);
 
 							if (met.comprobAsig(a)) {
 								ag.insertarAsig(a);
+								dispose();
 							} else {
 								debug.append("Esta asignatura ya existe\n");
 							}
@@ -248,7 +243,6 @@ public class nuevaAsig extends JFrame {
 				}
 			}
 		});
-
 		boolGlobal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (textNota2.isVisible()) {
@@ -276,10 +270,30 @@ public class nuevaAsig extends JFrame {
 				}
 			}
 		});
+
+		btnLimpiar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				limpiar(todoText);
+			}
+		});
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+			}
+		});
 	}
 
 	// ------------------------------------------ METODOS
 	// ------------------------------------------
+	protected void limpiar(JTextField[] todoText) {
+		for (int i = 0; i < todoText.length; i++) {
+			todoText[i].setText("");
+		}
+		boolGlobal.setSelected(false);
+		textNota2.setVisible(true);
+		textNota2Por.setVisible(true);
+
+	}
 
 	protected Asignatura CrearAsig(JTextField nom, JCheckBox glob, JTextField n1, JTextField n1p, JTextField n2,
 			JTextField n2p, JTextField nla, JTextField nlap, JTextField npa, JTextField npap, JTextField nte,

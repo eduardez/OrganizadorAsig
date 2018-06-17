@@ -12,6 +12,9 @@ import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 
 import dominio.metod;
+import java.awt.Toolkit;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class notasCurso extends JFrame {
 
@@ -26,7 +29,15 @@ public class notasCurso extends JFrame {
 	
 	metod met=new metod();
 	public notasCurso() throws Exception {
-		setAutoRequestFocus(false);
+		addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				dispose();
+			}
+		});
+		setTitle("Notas por curso");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(notasCurso.class.getResource("/org/hsqldb/util/GreenCircle.gif")));
+		setAlwaysOnTop(true);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 797);

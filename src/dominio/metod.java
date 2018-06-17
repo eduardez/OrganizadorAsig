@@ -2,21 +2,28 @@ package dominio;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.Image;
 import java.awt.TextArea;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 
 import persistencia.Agente;
+import presentacion.FrameCalend;
 import presentacion.notasCurso;
 
 public class metod {
@@ -52,8 +59,8 @@ public class metod {
 		CustomTableCellRenderer colorTotal = new CustomTableCellRenderer();
 		colorTotal.setForeground(Color.RED);
 		colorTotal.setHorizontalAlignment(SwingConstants.CENTER);
-			for (int i = 0; i < tablaNotas.getModel().getColumnCount(); i++) {
-				tablaNotas.getColumnModel().getColumn(i).setCellRenderer(colorTotal);
+		for (int i = 0; i < tablaNotas.getModel().getColumnCount(); i++) {
+			tablaNotas.getColumnModel().getColumn(i).setCellRenderer(colorTotal);
 		}
 	}
 
@@ -101,26 +108,14 @@ public class metod {
 
 	public JComboBox updateBox(JComboBox caja, String[] valores) throws Exception {
 		caja.removeAllItems();
-		ArrayList<String> val=new ArrayList<String>();
-		for(int i=0;i<valores.length;i++)val.add(valores[i]);
+		ArrayList<String> val = new ArrayList<String>();
+		for (int i = 0; i < valores.length; i++)
+			val.add(valores[i]);
 		val.sort(null);
 		for (int i = 0; i < valores.length; i++)
 			caja.addItem(val.get(i));
-		
-		return caja;
-	}
 
-	public void otrasOp(JComboBox cajaOtros) throws Exception {
-		int opt = cajaOtros.getSelectedIndex();
-		System.out.println(opt);
-		switch (opt) {
-		case 0:
-			break;
-		case 1:
-			notasCurso not = new notasCurso();
-			not.setVisible(true);
-			break;
-		}
+		return caja;
 	}
 
 	// ------------------------ Calculos ----------------------
@@ -230,20 +225,131 @@ public class metod {
 		cajaAsig = updateBox(cajaAsig, nomAsig(nuovoAsig));
 		return nuovoAsig;
 	}
+
+	// ------------------- Metodos Calendario -------------------
+
+	public ArrayList<Tarea> comprobarTareas(JTextArea areaTareas, int yy, int mm, int dd) throws SQLException {
+
+		Agente ag = new Agente();
+		if (areaTareas != null) {
+			areaTareas.setText("");
+		}
+		ArrayList<Tarea> t = ag.selectTareas();
+		ArrayList<Tarea> tar = new ArrayList<Tarea>();
+
+		for (int i = 0; i < t.size(); i++) {
+			if (mismaFecha(yy, mm, dd, t.get(i).getFecha(),t.get(i).isAnual())) {
+				tar.add(t.get(i));
+			}
+		}
+		if (areaTareas != null) {
+			impTarea(areaTareas, tar);
+		}
+		return tar;
+	}
+
+	public void impTarea(JTextArea areaTareas, ArrayList<Tarea> t) {
+		int countTareas = 1;
+
+		for (int i = 0; i < t.size(); i++) {
+			Date diia = t.get(i).getFecha();
+			String hora = (String.format("%02d", diia.getHours()) + " : " + String.format("%02d", diia.getMinutes()));
+			areaTareas.append((countTareas) + "- " + t.get(i).getTexto() + "  -  Hora: " + hora + " \n");
+			countTareas++;
+
+		}
+	}
+
+	public void dentro7dias(JTable tabla) {
+		Agente ag;
+		String[] dias = { "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo" };
+		int finMes[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+		boolean finMesBool = true;
+		try {
+			ag = new Agente();
+			ArrayList<Tarea> t = ag.selectTareas();
+			Date hoy = new GregorianCalendar().getTime();
+
+			int countdia = 0;// Esto es megacutre, pero bueno, que le jodan
+			int count = 0;
+			for (int j = 1; j <= 7; j++) {// Recorrer proximos 7 dias
+				for (int i = 0; i < t.size(); i++) {// Recorrer todo el array de tareas
+					if (mismaFecha((hoy.getYear() + 1900), hoy.getMonth(), (hoy.getDate() + j), t.get(i).getFecha(),t.get(i).isAnual())) {
+						count++;
+					}
+				}
+				if ((hoy.getDate() + j) <= finMes[hoy.getMonth()]) {
+					if ((hoy.getDay() + j) > 7) {
+						tabla.getModel().setValueAt((dias[countdia] + " " + (hoy.getDate() + j)), j - 1, 0);
+						countdia++;
+					} else {
+						tabla.getModel().setValueAt((dias[hoy.getDay() + j - 1] + " " + (hoy.getDate() + j)), j - 1, 0);
+					}
+					tabla.getModel().setValueAt((count + " cosa(s)"), j - 1, 1);
+				} else if (finMesBool) {
+					tabla.getModel().setValueAt("Fin de mes", j - 1, 0);
+					tabla.getModel().setValueAt("----------", j - 1, 1);
+					finMesBool = false;
+
+				}
+				count = 0;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public boolean mismaFecha(int yy, int mm, int dd, Object fecha, boolean anual) {
+		boolean misma = false;
+		String fechaArray = fecha.toString();
+		String yyF = String.valueOf(fechaArray.charAt(0)) + fechaArray.charAt(1) + fechaArray.charAt(2)
+				+ fechaArray.charAt(3);
+		String mmF = String.valueOf(fechaArray.charAt(5)) + fechaArray.charAt(6);
+		String ddF = String.valueOf(fechaArray.charAt(8)) + fechaArray.charAt(9);
+
+		if ((yy == Integer.valueOf(yyF) || anual) && mm == (Integer.valueOf(mmF) - 1) && dd == Integer.valueOf(ddF)) {
+			misma = true;
+		}
+
+		return misma;
+	}
+
+	public boolean comprobarTareasMes(int yy, int mm, int dia) {
+		boolean tarea = false;
+		Agente ag;
+		try {
+			ag = new Agente();
+			ArrayList<Tarea> t = ag.selectTareas();
+
+			for (int i = 0; i < t.size(); i++) {
+				if (mismaFecha(yy, mm, dia, t.get(i).getFecha(), t.get(i).isAnual())) {
+					tarea = true;
+				}
+			}
+			return tarea;
+		} catch (SQLException e) {
+			return false;
+		}
+	}
+
 	// ---------------------- Otros Metodos -------------------
-	
+
 	public boolean comprobAsig(Asignatura a) throws Exception {
-		boolean esta=false;
-		ArrayList<Asignatura> todas=getAsig();
-		
-		for(int i=0;i<todas.size() && !esta;i++) {
-			if(todas.get(i).getNombre().equals(a.getNombre())&&todas.get(i).getAo()==a.getAo()) {
-				esta=true;
+		boolean esta = false;
+		ArrayList<Asignatura> todas = getAsig();
+
+		for (int i = 0; i < todas.size() && !esta; i++) {
+			if (todas.get(i).getNombre().equals(a.getNombre()) && todas.get(i).getAo() == a.getAo()) {
+				esta = true;
 				System.out.println("Cuidadoooooorrr");
 			}
 		}
-		
 		return !esta;
+	}
+	public Icon resizeIcon(ImageIcon icon, int resizedWidth, int resizedHeight) {
+	    Image img = icon.getImage();  
+	    Image resizedImage = img.getScaledInstance(resizedWidth, resizedHeight,  java.awt.Image.SCALE_SMOOTH);  
+	    return new ImageIcon(resizedImage);
 	}
 
 }

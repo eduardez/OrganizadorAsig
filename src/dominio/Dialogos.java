@@ -23,7 +23,7 @@ public class Dialogos {
 	}
 
 	public void dialogEdulcorante() {
-		ImageIcon edul = new ImageIcon(Dialogos.class.getResource("/resources/profilebig.jpg"));
+		ImageIcon edul = new ImageIcon(Dialogos.class.getResource("/profile.jpg"));
 		JOptionPane.showMessageDialog(null, "2018, All rigth.       凸ಠ益ಠ)凸        ", "Edulcorante", JOptionPane.INFORMATION_MESSAGE, edul);
 	}
 }
