@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="D:/Eduardez/workspace/Eclipse/Librerias/hsqldb.jar"/>
 	<classpathentry kind="lib" path="D:/Eduardez/workspace/Eclipse/Librerias/jackcess-2.1.11.jar"/>
 	<classpathentry kind="lib" path="D:/Eduardez/workspace/Eclipse/Librerias/ucanaccess-4.0.4.jar"/>
+	<classpathentry kind="lib" path="D:/Eduardez/Escritorio/quaqua.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

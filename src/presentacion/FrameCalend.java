@@ -67,25 +67,6 @@ public class FrameCalend extends JFrame {
 	// ----------------------------------------------
 	metod met = new metod();
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FrameCalend frame = new FrameCalend();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	public FrameCalend() {
 
 		setResizable(false);
@@ -184,21 +165,18 @@ public class FrameCalend extends JFrame {
 		btnEliminarEvento.setBounds(187, 142, 159, 23);
 		panelCosas.add(btnEliminarEvento);
 
+		JButton btnInfo = new JButton("");
+		btnInfo.setBounds(329, 7, 25, 25);
+		ImageIcon img = new ImageIcon(
+				FrameCalend.class.getResource("/com/sun/javafx/scene/control/skin/modena/dialog-confirm.png"));
+		btnInfo.setIcon(met.resizeIcon(img, btnInfo.getWidth(), btnInfo.getHeight()));
+		panelFecha.add(btnInfo);
+
 		// ----------------------- Metodos -----------------------
 		setYYMMDD(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 		lblHoy.setText(dd + " de " + meses[mm] + ", " + yy);
 		lblMesAo.setText(meses[mm] + " " + yy);
 
-		JButton btnInfo = new JButton("");
-		btnInfo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-			}
-		});
-		btnInfo.setBounds(329, 7, 25, 25);
-		ImageIcon img = new ImageIcon(FrameCalend.class.getResource("/com/sun/javafx/scene/control/skin/modena/dialog-confirm.png"));
-		btnInfo.setIcon(met.resizeIcon(img, btnInfo.getWidth(), btnInfo.getHeight()));
-		panelFecha.add(btnInfo);
 		calcDias();
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -207,7 +185,6 @@ public class FrameCalend extends JFrame {
 					menuPrincipal men = new menuPrincipal();
 					men.setVisible(true);
 					men.setLocationRelativeTo(null);
-
 				} catch (Exception e1) {
 				}
 			}
@@ -219,6 +196,11 @@ public class FrameCalend extends JFrame {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		btnInfo.addActionListener(new ActionListener() {//Boton de info
+			public void actionPerformed(ActionEvent e) {
+				areaTareas.setText("Significado del color de las casillas \n·Azul: 3 eventos o menos \n·Amarillo: De 3 a 5 eventos \n·Rojo: Mas de 5 eventos");
+			}
+		});
 		btnEliminarEvento.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
