@@ -238,7 +238,7 @@ public class metod {
 		ArrayList<Tarea> tar = new ArrayList<Tarea>();
 
 		for (int i = 0; i < t.size(); i++) {
-			if (mismaFecha(yy, mm, dd, t.get(i).getFecha(),t.get(i).isAnual())) {
+			if (mismaFecha(yy, mm, dd, t.get(i).getFecha(), t.get(i).isAnual())) {
 				tar.add(t.get(i));
 			}
 		}
@@ -274,7 +274,8 @@ public class metod {
 			int count = 0;
 			for (int j = 1; j <= 7; j++) {// Recorrer proximos 7 dias
 				for (int i = 0; i < t.size(); i++) {// Recorrer todo el array de tareas
-					if (mismaFecha((hoy.getYear() + 1900), hoy.getMonth(), (hoy.getDate() + j), t.get(i).getFecha(),t.get(i).isAnual())) {
+					if (mismaFecha((hoy.getYear() + 1900), hoy.getMonth(), (hoy.getDate() + j), t.get(i).getFecha(),
+							t.get(i).isAnual())) {
 						count++;
 					}
 				}
@@ -331,7 +332,68 @@ public class metod {
 			return false;
 		}
 	}
+	// ---------------------- Metodos Horario -----------------
 
+	public int[] getAoHor() {
+		ArrayList<Horario> h = new ArrayList<Horario>();
+		try {
+			Agente ag = new Agente();
+			h = ag.selectHoraio();
+		} catch (SQLException e) {
+			Dialogos di = new Dialogos();
+			di.dialogNoBD();
+		}
+		ArrayList<Horario> ao = new ArrayList<Horario>();
+		for (int i = 0; i < h.size(); i++) {
+			if (!ao.contains(h.get(i).getAo())) {
+				ao.add(h.get(i));
+			}
+		}
+		int[] sinRep = new int[ao.size()];
+		for (int i = 0; i < ao.size(); i++) {
+			sinRep[i] = ao.get(i).getAo();
+		}
+		return sinRep;
+	}
+	public boolean compCuatri(int ao, int cuatri) {
+		boolean existe=false;
+		ArrayList<Horario> h = new ArrayList<Horario>();
+		try {
+			Agente ag = new Agente();
+			h = ag.selectHoraio();
+		} catch (SQLException e) {
+			Dialogos di = new Dialogos();
+			di.dialogNoBD();
+		}
+		Horario hors = new Horario();
+		for(int i=0;i<h.size();i++) {
+			if(h.get(i).getAo()==ao && h.get(i).getCuatri()==cuatri) {
+				existe=true;
+			}
+		}
+		return existe;
+	}
+
+	public Horario getHor(int ao, int cuatri) {
+		ArrayList<Horario> h = new ArrayList<Horario>();
+		try {
+			Agente ag = new Agente();
+			h = ag.selectHoraio();
+		} catch (SQLException e) {
+			Dialogos di = new Dialogos();
+			di.dialogNoBD();
+		}
+		Horario hors = new Horario();
+		for(int i=0;i<h.size();i++) {
+			if(h.get(i).getAo()==ao && h.get(i).getCuatri()==cuatri) {
+				hors=h.get(i);
+				System.out.println(hors.getAo()+" "+hors.getCuatri());
+			}
+		}
+		
+		return hors;
+
+	}
 	// ---------------------- Otros Metodos -------------------
 
 	public boolean comprobAsig(Asignatura a) throws Exception {
@@ -346,10 +408,11 @@ public class metod {
 		}
 		return !esta;
 	}
+
 	public Icon resizeIcon(ImageIcon icon, int resizedWidth, int resizedHeight) {
-	    Image img = icon.getImage();  
-	    Image resizedImage = img.getScaledInstance(resizedWidth, resizedHeight,  java.awt.Image.SCALE_SMOOTH);  
-	    return new ImageIcon(resizedImage);
+		Image img = icon.getImage();
+		Image resizedImage = img.getScaledInstance(resizedWidth, resizedHeight, java.awt.Image.SCALE_SMOOTH);
+		return new ImageIcon(resizedImage);
 	}
 
 }
