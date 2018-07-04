@@ -153,6 +153,7 @@ public class FrameCalend extends JFrame {
 		panelCosas.add(tabla7Dias);
 
 		areaTareas = new JTextArea();
+		areaTareas.setLineWrap(true);
 		areaTareas.setEditable(false);
 		areaTareas.setBounds(10, 31, 339, 105);
 		panelCosas.add(areaTareas);

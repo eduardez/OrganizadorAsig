@@ -52,7 +52,12 @@ public class menuPrincipal extends JFrame {
 	Dialogos di = new Dialogos();
 
 	public menuPrincipal() throws Exception {
-	
+		try {// El buen look an fil
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		setIconImage(Toolkit.getDefaultToolkit().getImage(menuPrincipal.class.getResource("/icon.png")));
 		setResizable(false);
 		setTitle("Organizador de Asignaturas - v.1.3.5");
@@ -298,7 +303,7 @@ public class menuPrincipal extends JFrame {
 		btnHorario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				frameHorario hor=new frameHorario();
+				frameHorario hor = new frameHorario();
 				hor.setVisible(true);
 				hor.setLocationRelativeTo(null);
 

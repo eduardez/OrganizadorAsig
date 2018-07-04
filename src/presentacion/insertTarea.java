@@ -80,6 +80,7 @@ public class insertTarea extends JDialog {
 		panelTarea.setLayout(null);
 
 		JTextArea areaTarea = new JTextArea();
+		areaTarea.setLineWrap(true);
 		areaTarea.setFont(new Font("Calibri", Font.PLAIN, 15));
 		areaTarea.setBounds(10, 25, 392, 52);
 		panelTarea.add(areaTarea);
